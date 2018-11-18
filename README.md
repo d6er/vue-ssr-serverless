@@ -1,8 +1,12 @@
 # vue-ssr-serverless
-Vue SSR Serverless Example
+
+Vue SSR Serverless Minimum Example
+
+# Usage
 
 ```
-$ serverless create --template aws-nodejs --path vue-ssr-serverless
+$ git clone git@github.com:d6er/vue-ssr-serverless.git
 $ cd vue-ssr-serverless/
 $ npm install vue vue-server-renderer
+$ serverless deploy
 ```
