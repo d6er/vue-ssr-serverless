@@ -12,6 +12,49 @@ functions:
           method: GET
           path: /{proxy+}
 
+resources:
+  Resources:
+    ProxyBaseResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Fn::GetAtt:
+            - ApiGatewayRestApi
+            - RootResourceId
+        PathPart: dist
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    ProxyPathResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Ref: ProxyBaseResource
+        PathPart: '{proxy+}'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    ProxyMethod:
+      Type: AWS::ApiGateway::Method
+      Properties:
+        ResourceId:
+          Ref: ProxyPathResource
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        AuthorizationType: NONE
+        HttpMethod: GET
+        MethodResponses:
+          - StatusCode: 200
+        Integration:
+          Type: HTTP_PROXY
+          IntegrationHttpMethod: GET
+          Uri: http://listman.d6er.com/dist/{proxy}
+          IntegrationResponses:
+            - StatusCode: 200
+
 plugins:
   - serverless-offline
-  
+
+custom:
+  serverless-offline:
+    resourceRoutes:
+      ProxyMethod:
+        Uri: 'http://localhost/dist/{proxy}'
