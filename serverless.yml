@@ -43,18 +43,30 @@ resources:
         HttpMethod: GET
         MethodResponses:
           - StatusCode: 200
+        RequestParameters:
+          'method.request.path.proxy': true
         Integration:
           Type: HTTP_PROXY
           IntegrationHttpMethod: GET
-          Uri: http://listman.d6er.com/dist/{proxy}
+          Uri: http://vue-ssr-serverless-s3-bucket.s3-website-us-east-1.amazonaws.com/{proxy}
+          RequestParameters:
+            'integration.request.path.proxy': 'method.request.path.proxy'
           IntegrationResponses:
             - StatusCode: 200
 
 plugins:
   - serverless-offline
+  - serverless-finch
+  - serverless-domain-manager
 
 custom:
   serverless-offline:
     resourceRoutes:
       ProxyMethod:
         Uri: 'http://localhost/dist/{proxy}'
+  client:
+    bucketName: vue-ssr-serverless-s3-bucket
+    distributionFolder: dist
+  customDomain:
+    domainName: sls.d6er.com
+    certificateName: '*.d6er.com'
