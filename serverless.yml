@@ -11,6 +11,9 @@ functions:
       - http:
           method: GET
           path: /{proxy+}
+      - http:
+          method: GET
+          path: /
 
 resources:
   Resources:
