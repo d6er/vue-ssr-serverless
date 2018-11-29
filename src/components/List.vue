@@ -1,6 +1,8 @@
 <template>
   <div>
-    List.vue
+    <p>
+      List.vue
+    </p>
     <router-link to="/item/1">
       Item 1
     </router-link>

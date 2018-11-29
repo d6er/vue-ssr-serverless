@@ -1,5 +1,7 @@
 <template>
   <div>
-    Item.vue
+    <p>
+      Item.vue
+    </p>
   </div>
 </template>
