@@ -1,35 +1,45 @@
 'use strict';
 
-// Step 1: Create a Vue instance
-const Vue = require('vue')
-const app = new Vue({
-  template: `<div>Hello World</div>`
+const fs = require('fs')
+const { createBundleRenderer } = require('vue-server-renderer')
+
+const template = fs.readFileSync('./src/index.template.html', 'utf-8')
+const serverBundle = require('./dist/vue-ssr-server-bundle.json')
+const clientManifest = require('./dist/vue-ssr-client-manifest.json')
+
+const renderer = createBundleRenderer(serverBundle, {
+  runInNewContext: false,
+  template,
+  clientManifest
 })
 
-// Step 2: Create a renderer
-const renderer = require('vue-server-renderer').createRenderer({
-  template: require('fs').readFileSync('./index.template.html', 'utf-8')
-})
-
-module.exports.hello = async (event, context, callback) => {
+module.exports.index = (event, context, callback) => {
   
-  const ssrContext = {
+  const appContext = {
+    url: event.path,
     title: 'Vue SSR Serverless'
   }
   
-  // Step 3: Render the Vue instance to HTML
-  renderer.renderToString(app, ssrContext, (err, html) => {
-    if (err) throw err
+  renderer.renderToString(appContext, (err, html) => {
     
-    const response = {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/html"
-      },
-      body: html
+    if (err) {
+      
+      console.dir(err)
+      
+    } else {
+      
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "text/html"
+        },
+        body: html
+      }
+      
+      callback(null, response)
+      
     }
     
-    callback(null, response)
   })
 
-};
+}
