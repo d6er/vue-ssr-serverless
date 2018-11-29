@@ -1,6 +1,6 @@
 # vue-ssr-serverless
 
-Vue SSR Serverless Minimum Example
+Vue SSR Serverless Example
 
 **Usage**
 
