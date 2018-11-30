@@ -4,6 +4,7 @@
   "description": "Vue SSR Serverless Minimum Example",
   "main": "handler.js",
   "dependencies": {
+    "aws-amplify": "^1.1.10",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.5.17",
