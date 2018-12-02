@@ -5,6 +5,7 @@
   "main": "handler.js",
   "dependencies": {
     "aws-amplify": "^1.1.10",
+    "aws-amplify-vue": "^0.1.7",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.5.17",

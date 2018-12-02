@@ -1,6 +1,6 @@
 {
     "projectName": "vuessrserverless",
-    "projectPath": "/home/ywatanabe/work/vue-ssr-serverless",
+    "projectPath": "/var/work/vue-ssr-serverless",
     "defaultEditor": "emacs",
     "frontendHandler": {
         "javascript": "/usr/lib/node_modules/@aws-amplify/cli/node_modules/amplify-frontend-javascript"
