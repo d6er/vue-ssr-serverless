@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import { Auth } from 'aws-amplify';
+
 /*
 import Amplify, { Auth } from 'aws-amplify';
 import aws_exports from './aws-exports';
@@ -34,15 +36,19 @@ Vue.use(Router)
 
 export function createRouter () {
   
+  console.log('router.js createRouter')
+  
   /*
   function requireAuth (to, from, next) {
-    console.log(url)
-    next(url)
+    Auth.currentAuthenticatedUser()
+      .then(user => console.log(user))
+      .catch(err => console.log(err));
+    next()
   }
   */
   
   return new Router({
-    mode: 'history',
+    //mode: 'history',
     routes: [
       {
         path: '/',
@@ -50,6 +56,10 @@ export function createRouter () {
       },
       {
         path: '/login',
+        component: () => import('./components/Login.vue')
+      },
+      {
+        path: '/signin',
         component: () => import('./components/Login.vue')
       },
       {

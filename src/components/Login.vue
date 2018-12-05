@@ -1,19 +1,17 @@
 <template>
 <div>
-  <!--
-  <amplify-sign-in v-bind:signInConfig="signInConfig"></amplify-sign-in>
-  -->
+  Login.vue
 </div>
 </template>
 
 <script>
-  /*
-  import { components } from 'aws-amplify-vue'
+import { Auth } from 'aws-amplify';
   
-  export default {
-  components: {
-  ...components
+export default {
+  mounted () {
+    Auth.currentAuthenticatedUser()
+      .then(user => console.log(user))
+      .catch(err => console.log(err));
   }
-  }
-  */
+}
 </script>

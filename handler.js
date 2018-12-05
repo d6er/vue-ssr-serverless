@@ -15,6 +15,9 @@ const renderer = createBundleRenderer(serverBundle, {
 
 module.exports.index = (event, context, callback) => {
   
+  console.log('called index')
+  console.log(event)
+  
   const appContext = {
     url: event.path,
     title: 'Vue SSR Serverless'
@@ -22,19 +25,35 @@ module.exports.index = (event, context, callback) => {
   
   renderer.renderToString(appContext, (err, html) => {
     
+    console.log('renderToString callback')
+    
     if (err) {
       
-      console.dir(err)
-      
-    } else {
+      console.log('--ERROR--')
+      console.log(err)
       
       const response = {
         statusCode: 200,
         headers: {
           "Content-Type": "text/html"
         },
-        body: html
+        body: err
       }
+      
+      callback(null, response)
+      
+    } else {
+      
+      console.log('--SUCCESS--')
+      
+      const response = {
+        isBase64Encoded: false,
+        statusCode: 200,
+        //headers: { "Content-Type": "text/html" },
+        body: "test"
+      }
+      
+      console.log(response)
       
       callback(null, response)
       
