@@ -15,8 +15,8 @@ const renderer = createBundleRenderer(serverBundle, {
 
 module.exports.index = (event, context, callback) => {
   
-  console.log('called index')
-  console.log(event)
+  // https://github.com/aws-amplify/amplify-js/issues/1460
+  context.callbackWaitsForEmptyEventLoop = false;
   
   const appContext = {
     url: event.path,
@@ -44,13 +44,10 @@ module.exports.index = (event, context, callback) => {
       
     } else {
       
-      console.log('--SUCCESS--')
-      
       const response = {
-        isBase64Encoded: false,
         statusCode: 200,
-        //headers: { "Content-Type": "text/html" },
-        body: "test"
+        headers: { "Content-Type": "text/html" },
+        body: html
       }
       
       console.log(response)
