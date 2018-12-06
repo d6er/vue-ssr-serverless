@@ -36,8 +36,6 @@ Vue.use(Router)
 
 export function createRouter () {
   
-  console.log('router.js createRouter')
-  
   /*
   function requireAuth (to, from, next) {
     Auth.currentAuthenticatedUser()
@@ -48,7 +46,7 @@ export function createRouter () {
   */
   
   return new Router({
-    //mode: 'history',
+    mode: 'history',
     routes: [
       {
         path: '/',

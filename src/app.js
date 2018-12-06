@@ -27,12 +27,7 @@ const { domain, redirectSignIn, redirectSignOut, responseType } = config.oauth;
 const clientId = config.userPoolWebClientId;
 const url = 'https://' + domain + '/login?redirect_uri=' + redirectSignIn + '&response_type=' + responseType + '&client_id=' + clientId;
 
-console.log('app.js url')
-console.log(url)
-
 export function createApp () {
-  
-  console.log('app.js createApp')
   
   const router = createRouter()
   const store = createStore()
