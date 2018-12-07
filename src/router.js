@@ -1,40 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import config from '../config/client'
 
 import { Auth } from 'aws-amplify';
 
-/*
-import Amplify, { Auth } from 'aws-amplify';
-import aws_exports from './aws-exports';
-
-Amplify.configure(aws_exports);
-
-const oauth = {
-  domain : 'sls-d6er-com.auth.us-east-1.amazoncognito.com', 
-  scope : ['phone', 'email', 'profile', 'openid','aws.cognito.signin.user.admin'], 
-  redirectSignIn : 'https://sls.d6er.com/signin', 
-  redirectSignOut : 'https://sls.d6er.com/signout',
-  responseType: 'code',
-  options: {
-    AdvancedSecurityDataCollectionFlag : true
-  }
-}
-
-Amplify.configure({
-  Auth: {
-    oauth: oauth
-  }
-});
-
-const config = Auth.configure();
-const { domain,  redirectSignIn, redirectSignOut, responseType } = config.oauth;
-const clientId = config.userPoolWebClientId;
-const url = 'https://' + domain + '/login?redirect_uri=' + redirectSignIn + '&response_type=' + responseType + '&client_id=' + clientId;
-*/
-
 Vue.use(Router)
 
-export function createRouter () {
+export function createRouter (store) {
   
   function requireAuth (to, from, next) {
     Auth.currentAuthenticatedUser().then(user => {
@@ -47,6 +19,38 @@ export function createRouter () {
     next()
   }
   
+  let listsRegExp = store.state.lists.map(list => list.name).join('|')
+  
+  // dynamic child component for list
+  let listRoutes = []
+  config.lists.map(list => {
+    listRoutes.push({
+      path: '/:list(' + list.name + ')',
+      beforeEnter: requireAuth,
+      component: () => import('./components/' + list.name + '/list/Column.vue')
+    })
+    listRoutes.push({
+      path: '/:list(' + list.name + ')/:filter/p:page(\\d+)?',
+      beforeEnter: requireAuth,
+      component: () => import('./components/' + list.name + '/list/Column.vue')
+    })
+  })
+  
+  // dynamic child component for detail tabs
+  let tabRoutes = []
+  config.lists.map(list => {
+    list.tabs.map(tab => {
+      let tabName = tab.charAt(0).toUpperCase() + tab.slice(1);
+      let route = {
+        path: '/:list(' + list.name + ')/:filter/:id/:tab(' + tab + ')',
+        beforeEnter: requireAuth,
+        component: () => import('./components/' + list.name + '/detail/' + tabName + '.vue')
+      }
+      tabRoutes.push(route)
+    })
+  })
+  
+  // auth-flow: https://github.com/vuejs/vue-router/tree/dev/examples/auth-flow/components
   return new Router({
     mode: 'history',
     routes: [
@@ -68,10 +72,32 @@ export function createRouter () {
         component: () => import('./components/List.vue')
       },
       {
-        path: '/item/:id',
+        path: '/:list(' + listsRegExp + ')/:filter',
         beforeEnter: requireAuth,
-        component: () => import('./components/Item.vue')
-      }
+        component: () => import('./views/Container.vue'),
+        children: [
+          {
+            path: 'p:page(\\d+)?',
+            alias: '', // alias for page 1
+            beforeEnter: requireAuth,
+            // https://router.vuejs.org/guide/essentials/named-views.html
+            components: {
+              default: () => import('./views/List.vue'),
+              filterTree: () => import('./views/FilterTree.vue')
+            },
+            children: listRoutes
+          },
+          {
+            path: ':id',
+            beforeEnter: requireAuth,
+            components: {
+              default: () => import('./views/Detail.vue'),
+              filterTree: () => import('./views/FilterTree.vue')
+            },
+            children: tabRoutes
+          }
+        ]
+      },
     ]
   })
 }

@@ -29,8 +29,8 @@ const url = 'https://' + domain + '/login?redirect_uri=' + redirectSignIn + '&re
 
 export function createApp () {
   
-  const router = createRouter()
   const store = createStore()
+  const router = createRouter(store)
   
   sync(store, router)
   

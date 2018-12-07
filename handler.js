@@ -27,6 +27,8 @@ module.exports.index = (event, context, callback) => {
     
     if (err) {
       
+      console.log(err)
+      
       const response = {
         statusCode: 500,
         headers: {
