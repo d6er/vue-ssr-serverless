@@ -11,11 +11,24 @@
           Sign up
         </span>
       </router-link>
-      <router-link to="/login" class="navbar-item is-tab is-capitalized">
+      <a :href="loginUrl" class="navbar-item is-tab is-capitalized">
         <span class="is-hidden-mobile">
           Login
         </span>
-      </router-link>
+      </a>
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  computed: {
+    loginUrl () {
+      let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/login'
+      url += '?redirect_uri=https://sls.d6er.com/signin'
+      url += '&response_type=code&client_id=4o28h4bcbnk071idmpcflufjvd'
+      return url
+    }
+  }
+}
+</script>

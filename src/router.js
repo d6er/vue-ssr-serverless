@@ -36,21 +36,23 @@ Vue.use(Router)
 
 export function createRouter () {
   
-  /*
   function requireAuth (to, from, next) {
-    Auth.currentAuthenticatedUser()
-      .then(user => console.log(user))
-      .catch(err => console.log(err));
+    Auth.currentAuthenticatedUser().then(user => {
+      console.log('[user]')
+      console.log(user)
+    }).catch(err => {
+      console.log('[err]')
+      console.log(err)
+    });
     next()
   }
-  */
   
   return new Router({
     mode: 'history',
     routes: [
       {
         path: '/',
-        component: () => import('./components/Home.vue')
+        component: () => import('./views/Home.vue')
       },
       {
         path: '/login',
@@ -62,11 +64,12 @@ export function createRouter () {
       },
       {
         path: '/list',
+        beforeEnter: requireAuth,
         component: () => import('./components/List.vue')
       },
       {
         path: '/item/:id',
-        //beforeEnter: requireAuth,
+        beforeEnter: requireAuth,
         component: () => import('./components/Item.vue')
       }
     ]

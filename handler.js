@@ -25,15 +25,10 @@ module.exports.index = (event, context, callback) => {
   
   renderer.renderToString(appContext, (err, html) => {
     
-    console.log('renderToString callback')
-    
     if (err) {
       
-      console.log('--ERROR--')
-      console.log(err)
-      
       const response = {
-        statusCode: 200,
+        statusCode: 500,
         headers: {
           "Content-Type": "text/html"
         },
@@ -49,8 +44,6 @@ module.exports.index = (event, context, callback) => {
         headers: { "Content-Type": "text/html" },
         body: html
       }
-      
-      console.log(response)
       
       callback(null, response)
       

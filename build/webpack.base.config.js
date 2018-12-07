@@ -3,7 +3,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
   
-  mode: 'production',
+  mode: 'development', // production
   
   output: {
     path: path.resolve(__dirname, '../dist'),

@@ -1,12 +1,7 @@
 <template>
   <div id="app">
-    <NavbarGuest/>
-    <div>
-      <router-link to="/">
-        Home
-      </router-link>
-    </div>
-    <hr/>
+    <Navbar v-if="true"/>
+    <NavbarGuest v-else/>
     <section class="section">
       <router-view></router-view>
     </section>
@@ -14,11 +9,18 @@
 </template>
 
 <script>
+import Navbar from './views/Navbar.vue'
 import NavbarGuest from './views/NavbarGuest.vue'
+import { Auth } from 'aws-amplify';
 
 export default {
   components: {
+    Navbar: Navbar,
     NavbarGuest: NavbarGuest
+  },
+  computed: {
+    user () {
+    }
   }
 }
 </script>
