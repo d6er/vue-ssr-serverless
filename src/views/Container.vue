@@ -39,7 +39,7 @@
               </router-link>
             </li>
             <li>
-              <a href="/auth/local/logout">
+              <a :href="logoutUrlLocal">
                 <span class="icon">
                   <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                 </span>
@@ -66,6 +66,13 @@ export default {
       } else {
         return this.$store.state.user.username
       }
+    },
+
+    logoutUrlLocal () {
+      let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/logout'
+      url += '?redirect_uri=http://localhost:3000/signout'
+      url += '&client_id=4o28h4bcbnk071idmpcflufjvd'
+      return url
     }
   },
   

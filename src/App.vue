@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar v-if="true"/>
+    <Navbar v-if="$store.state.user"/>
     <NavbarGuest v-else/>
     <section class="section">
       <router-view></router-view>
