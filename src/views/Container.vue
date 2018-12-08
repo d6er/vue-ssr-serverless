@@ -39,11 +39,24 @@
               </router-link>
             </li>
             <li>
-              <a :href="logoutUrlLocal">
+              <button @click="signOut" class="button is-small">
+                Sign out
+              </button>
+            </li>
+            <li>
+              <a :href="logoutUrl">
                 <span class="icon">
                   <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                 </span>
                 Logout
+              </a>
+            </li>
+            <li>
+              <a :href="logoutUrlLocal">
+                <span class="icon">
+                  <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                </span>
+                LogoutLocal
               </a>
             </li>
           </ul>
@@ -57,9 +70,19 @@
 </template>
 
 <script>
-export default {
+import { Auth, Hub, Logger } from 'aws-amplify';
 
+// Hub
+const alex = new Logger('Alexander_the_auth_watcher')
+alex.onHubCapsule = (capsule) => {
+  console.log('[Container.vue Hub] ' + capsule.payload.event)
+}
+Hub.listen('auth', alex)
+
+export default {
+  
   computed: {
+    
     username () {
       if (this.$store.state.user.google) {
         return this.$store.state.user.google.displayName
@@ -68,9 +91,16 @@ export default {
       }
     },
 
+    logoutUrl () {
+      let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/logout'
+      url += '?logout_uri=https://sls.d6er.com/'
+      url += '&client_id=4o28h4bcbnk071idmpcflufjvd'
+      return url
+    },
+
     logoutUrlLocal () {
       let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/logout'
-      url += '?redirect_uri=http://localhost:3000/signout'
+      url += '?logout_uri=http://localhost:3000/'
       url += '&client_id=4o28h4bcbnk071idmpcflufjvd'
       return url
     }
@@ -79,6 +109,11 @@ export default {
   methods: {
     toggleDropdown () {
       this.$store.commit('toggleDropdown')
+    },
+    signOut () {
+      Auth.signOut()
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
     }
   }
 }

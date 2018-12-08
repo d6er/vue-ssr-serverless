@@ -21,26 +21,41 @@
           LoginLocal
         </span>
       </a>
+      <button @click="signIn" class="button is-small">
+        Sign in
+      </button>
     </div>
   </nav>
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
+
 export default {
   computed: {
     
     loginUrl () {
       let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/login'
-      url += '?redirect_uri=https://sls.d6er.com/signin'
+      url += '?redirect_uri=https://sls.d6er.com/'
       url += '&response_type=code&client_id=4o28h4bcbnk071idmpcflufjvd'
       return url
     },
     
     loginUrlLocal () {
       let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/login'
-      url += '?redirect_uri=http://localhost:3000/signin'
+      url += '?redirect_uri=http://localhost:3000/'
       url += '&response_type=code&client_id=4o28h4bcbnk071idmpcflufjvd'
       return url
+    }
+    
+  },
+  
+  methods: {
+    
+    signIn () {
+      Auth.signIn('nabe', 'Test!234')
+        .then(user => console.log(user))
+        .catch(err => console.log(err))
     }
     
   }

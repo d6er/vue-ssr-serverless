@@ -5,27 +5,38 @@ import { createStore } from './store'
 import { sync } from 'vuex-router-sync'
 
 /* Amplify */
-import Amplify, { Auth } from 'aws-amplify';
-import aws_exports from './aws-exports';
-Amplify.configure(aws_exports);
+import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
+import aws_exports from './aws-exports'
+Amplify.configure(aws_exports)
 
 const oauth = {
   domain : 'sls-d6er-com.auth.us-east-1.amazoncognito.com', 
   scope : ['phone', 'email', 'profile', 'openid','aws.cognito.signin.user.admin'], 
-  redirectSignIn : 'https://sls.d6er.com/signin', 
-  redirectSignOut : 'https://sls.d6er.com/signout',
+  redirectSignIn : 'http://localhost:3000/',
+  redirectSignOut : 'http://localhost:3000/',
   responseType: 'code',
   options: {
     AdvancedSecurityDataCollectionFlag : true
   }
 }
 
-Amplify.configure({ Auth: { oauth: oauth } });
+Amplify.configure({
+  Auth: {
+    /*
+    cookieStorage: {
+      domain: '.d6er.com',
+      path: '/',
+      expires: 365,
+      secure: true
+    },
+    */
+    oauth: oauth
+  }
+})
 
 const config = Auth.configure();
-const { domain, redirectSignIn, redirectSignOut, responseType } = config.oauth;
-const clientId = config.userPoolWebClientId;
-const url = 'https://' + domain + '/login?redirect_uri=' + redirectSignIn + '&response_type=' + responseType + '&client_id=' + clientId;
+console.log(config)
+
 
 export function createApp () {
   
@@ -34,6 +45,18 @@ export function createApp () {
   
   sync(store, router)
   
+  // Hub
+  const alex = new Logger('Alexander_the_auth_watcher')
+  alex.onHubCapsule = (capsule) => {
+    console.log('[app.js Hub] ' + capsule.payload.event)
+    switch (capsule.payload.event) {
+    case 'signIn':
+      store.commit('setUser', capsule.payload.data)
+      break;
+    }
+  }
+  Hub.listen('auth', alex)
+
   const app = new Vue({
     router,
     store,

@@ -1,42 +1,21 @@
 import { createApp } from './app'
-/*
-import Vue from 'vue'
-import App from './App.vue'
-import { createRouter } from './router'
-import { createStore } from './store'
-import { sync } from 'vuex-router-sync'
-*/
 
-/* Amplify */
-/*
-import Amplify, * as AmplifyModules from 'aws-amplify'
-import { AmplifyPlugin } from 'aws-amplify-vue'
-import aws_exports from './aws-exports'
-Amplify.configure(aws_exports)
+import { Hub, Logger } from 'aws-amplify';
 
-Vue.use(AmplifyPlugin, AmplifyModules)
-*/
+const { app, router, store } = createApp()
 
-const { app, router } = createApp()
+// Hub
+const alex = new Logger('Alexander_the_auth_watcher')
+alex.onHubCapsule = (capsule) => {
+  console.log('[entry-client.js Hub] ' + capsule.payload.event)
+  switch (capsule.payload.event) {
+  case 'signIn':
+    store.commit('setUser', capsule.payload.data)
+    break;
+  }
+}
+Hub.listen('auth', alex)
 
 router.onReady(() => {
   app.$mount('#app')
 })
-
-/*
-export function createApp () {
-  
-  const router = createRouter()
-  const store = createStore()
-  
-  sync(store, router)
-  
-  const app = new Vue({
-    router,
-    store,
-    render: h => h(App)
-  })
-  
-  return { app, router, store }
-}
-*/

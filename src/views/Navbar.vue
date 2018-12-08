@@ -36,15 +36,19 @@ export default {
     }
   },
   methods: {
+    
     toggleNavBar () {
       this.$store.commit('toggleNavBar')
     },
+    
     clearNotification () {
       this.$store.commit('clearNotification')
     },
+    
     isActiveTab (listName) {
       return this.list && listName == this.list.name
     }
+    
   }
 }
 </script>

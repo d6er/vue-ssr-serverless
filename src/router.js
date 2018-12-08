@@ -10,10 +10,10 @@ export function createRouter (store) {
   
   function requireAuth (to, from, next) {
     Auth.currentAuthenticatedUser().then(user => {
-      console.log('[user]')
+      console.log('[router.js user]')
       console.log(user)
     }).catch(err => {
-      console.log('[err]')
+      console.log('[router.js err]')
       console.log(err)
     });
     next()
