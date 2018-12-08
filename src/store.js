@@ -35,6 +35,10 @@ export function createStore () {
       setUser (state, user) {
         console.log('store.js setUser')
         Vue.set(state, 'user', user)
+      },
+
+      unsetUser (state) {
+        Vue.set(state, 'user', null)
       }
       
     }

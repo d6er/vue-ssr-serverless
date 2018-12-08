@@ -87,8 +87,6 @@
 </template>
 
 <script>
-import moment from 'moment-timezone'
-
 export default {
   
   computed: {
@@ -96,7 +94,7 @@ export default {
       return this.$store.state.user.username
     },
     timezone () {
-      return moment.tz.guess()
+      //return moment.tz.guess()
     }
   },
   

@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import config from '../config/client'
-
-import { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify'
 
 Vue.use(Router)
 
@@ -10,13 +9,23 @@ export function createRouter (store) {
   
   function requireAuth (to, from, next) {
     Auth.currentAuthenticatedUser().then(user => {
-      console.log('[router.js user]')
-      console.log(user)
+      next()
     }).catch(err => {
-      console.log('[router.js err]')
-      console.log(err)
-    });
-    next()
+      next({
+        path: '/signin',
+        query: { redirect: to.fullPath }
+      })
+    })
+  }
+  
+  function checkAuth (to, from, next) {
+    Auth.currentAuthenticatedUser().then(user => {
+      //let path = '/' + store.state.lists[0].name + '/' + store.state.lists[0].filters[0].name
+      let path = '/emails'
+      next(path)
+    }).catch(err => {
+      next()
+    })
   }
   
   let listsRegExp = store.state.lists.map(list => list.name).join('|')
@@ -56,20 +65,23 @@ export function createRouter (store) {
     routes: [
       {
         path: '/',
+        beforeEnter: checkAuth,
         component: () => import('./views/Home.vue')
       },
       {
-        path: '/login',
-        component: () => import('./views/Login.vue')
-      },
-      {
         path: '/signin',
-        component: () => import('./views/Login.vue')
+        beforeEnter: checkAuth,
+        component: () => import('./views/SignIn.vue')
       },
       {
-        path: '/list',
+        path: '/signup',
+        beforeEnter: checkAuth,
+        component: () => import('./views/Signup.vue')
+      },
+      {
+        path: '/settings',
         beforeEnter: requireAuth,
-        component: () => import('./components/List.vue')
+        component: () => import('./views/Settings.vue')
       },
       {
         path: '/:list(' + listsRegExp + ')/:filter',

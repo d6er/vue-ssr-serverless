@@ -39,24 +39,8 @@
               </router-link>
             </li>
             <li>
-              <button @click="signOut" class="button is-small">
-                Sign out
-              </button>
-            </li>
-            <li>
-              <a :href="logoutUrl">
-                <span class="icon">
-                  <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-                </span>
-                Logout
-              </a>
-            </li>
-            <li>
-              <a :href="logoutUrlLocal">
-                <span class="icon">
-                  <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-                </span>
-                LogoutLocal
+              <a @click="signOut">
+                Sign Out
               </a>
             </li>
           </ul>
@@ -91,29 +75,21 @@ export default {
       }
     },
 
-    logoutUrl () {
-      let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/logout'
-      url += '?logout_uri=https://sls.d6er.com/'
-      url += '&client_id=4o28h4bcbnk071idmpcflufjvd'
-      return url
-    },
-
-    logoutUrlLocal () {
-      let url = 'https://sls-d6er-com.auth.us-east-1.amazoncognito.com/logout'
-      url += '?logout_uri=http://localhost:3000/'
-      url += '&client_id=4o28h4bcbnk071idmpcflufjvd'
-      return url
-    }
   },
   
   methods: {
+    
     toggleDropdown () {
       this.$store.commit('toggleDropdown')
     },
+    
     signOut () {
-      Auth.signOut()
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
+      Auth.signOut().then(data => {
+        this.$store.commit('unsetUser')
+        this.$router.push('/')
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }

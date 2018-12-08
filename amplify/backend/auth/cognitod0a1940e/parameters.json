@@ -47,7 +47,7 @@
     "userpoolClientLogPolicy": "cognitod0a1940e_userpoolclient_lambda_log_policy",
     "userpoolClientLambdaPolicy": "cognitod0a1940e_userpoolclient_lambda_iam_policy",
     "userpoolClientSetAttributes": false,
-    "useDefault": "default",
+    "useDefault": "manual",
     "unAuthRoleName": "vuessrserverless-20181130162249-unauthRole",
     "authRoleName": "vuessrserverless-20181130162249-authRole",
     "unAuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181130162249-unauthRole",

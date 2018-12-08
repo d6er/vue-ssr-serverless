@@ -19,7 +19,10 @@ alex.onHubCapsule = (capsule) => {
   console.log('[App.vue Hub] ' + capsule.payload.event)
   switch (capsule.payload.event) {
   case 'signIn':
-    this.$store.commit('setUser', capsule.payload.data)
+    //this.$store.commit('setUser', capsule.payload.data)
+    break;
+  case 'configured':
+    //this.$store.commit('setUser', capsule.payload.data)
     break;
   }
 }
@@ -27,7 +30,6 @@ Hub.listen('auth', alex);
 
 export default {
   
-  /*
   mounted: function () {
     Auth.currentAuthenticatedUser().then(user => {
       console.log('[App.vue user]')
@@ -38,7 +40,6 @@ export default {
       console.log(err)
     })
   },
-  */
 
   components: {
     Navbar: Navbar,

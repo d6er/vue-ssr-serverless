@@ -9,6 +9,7 @@ import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
+/*
 const oauth = {
   domain : 'sls-d6er-com.auth.us-east-1.amazoncognito.com', 
   scope : ['phone', 'email', 'profile', 'openid','aws.cognito.signin.user.admin'], 
@@ -19,24 +20,25 @@ const oauth = {
     AdvancedSecurityDataCollectionFlag : true
   }
 }
+*/
 
+/*
 Amplify.configure({
   Auth: {
-    /*
     cookieStorage: {
-      domain: '.d6er.com',
+      //domain: '.d6er.com',
+      domain: 'localhost',
       path: '/',
       expires: 365,
       secure: true
     },
-    */
-    oauth: oauth
+    //oauth: oauth
   }
 })
 
 const config = Auth.configure();
 console.log(config)
-
+*/
 
 export function createApp () {
   
@@ -45,13 +47,21 @@ export function createApp () {
   
   sync(store, router)
   
+  Auth.currentAuthenticatedUser().then(user => {
+    console.log('[app.js user]')
+    console.log(user)
+  }).catch(err => {
+    console.log('[app.js err]')
+    console.log(err)
+  })
+  
   // Hub
   const alex = new Logger('Alexander_the_auth_watcher')
   alex.onHubCapsule = (capsule) => {
     console.log('[app.js Hub] ' + capsule.payload.event)
     switch (capsule.payload.event) {
     case 'signIn':
-      store.commit('setUser', capsule.payload.data)
+      //store.commit('setUser', capsule.payload.data)
       break;
     }
   }
