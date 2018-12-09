@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import api from './api'
 
 import config from '../config/client'
 
 Vue.use(Vuex)
-
-//import { fetchItem } from './api'
 
 export function createStore () {
   
@@ -13,15 +12,31 @@ export function createStore () {
     
     state: {
       
+      user: null,
+      
+      accounts: [],
+      
       lists: config.lists,
       
-      items: {}
+      paging: [],
+      
+      filterForm: {},
+      
+      currentList: {},
+
+      isNavBarActive: false, // todo: delete
+      
+      isDropdownActive: false,
+      
+      isFilterFormActive: false,
+      
+      notification: null
     },
     
     actions: {
-      fetchItem ({ commit }, id) {
-        return fetchItem(id).then(item => {
-          commit('setItem', { id, item })
+      callApi ({ commit, state }, payload) {
+        api.call(payload).then(result => {
+          console.log(result)
         })
       }
     },

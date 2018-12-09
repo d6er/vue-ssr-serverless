@@ -43,6 +43,11 @@
                 Sign Out
               </a>
             </li>
+            <li>
+              <a @click="callAPI">
+                Call API
+              </a>
+            </li>
           </ul>
         </aside>
       </div>
@@ -90,6 +95,13 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+
+    callAPI () {
+      let payload = {
+        foo: 'bar'
+      }
+      this.$store.dispatch('callApi', payload)
     }
   }
 }

@@ -6,7 +6,7 @@ provider:
 
 functions:
   index:
-    handler: handler.index
+    handler: src-server/handler.index
     events:
       - http:
           method: GET
@@ -14,10 +14,19 @@ functions:
       - http:
           method: GET
           path: /
+  api:
+    handler: src-server/api.index
+    events:
+      - http:
+          method: POST
+          path: /api
 
 package:
   exclude:
     - node_modules/.cache/**
+    - node_modules/aws-sdk/**
+    - build/**
+    - .git/**
 
 resources:
   Resources:

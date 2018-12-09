@@ -1,27 +1,17 @@
-'use strict';
+'use strict'
 
 const fs = require('fs')
 
 const { createBundleRenderer } = require('vue-server-renderer')
 
 const template = fs.readFileSync('./src/index.template.html', 'utf-8')
-const serverBundle = require('./dist/vue-ssr-server-bundle.json')
-const clientManifest = require('./dist/vue-ssr-client-manifest.json')
+const serverBundle = require('../dist/vue-ssr-server-bundle.json')
+const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 
 const renderer = createBundleRenderer(serverBundle, {
   runInNewContext: false,
   template,
   clientManifest
-})
-
-// mongo
-const MongoClient = require('mongodb').MongoClient
-const uri = 'mongodb+srv://slsuser:AeirLN8nlHGobLbD@cluster0-hgxr1.mongodb.net/test'
-const client = new MongoClient(uri, { useNewUrlParser: true })
-client.connect(err => {
-  const collection = client.db("test").collection("devices")
-  console.log(collection)
-  client.close();
 })
 
 module.exports.index = (event, context, callback) => {
@@ -48,7 +38,7 @@ module.exports.index = (event, context, callback) => {
         body: err
       }
       
-      callback(null, response)
+      callback(err, response)
       
     } else {
       
