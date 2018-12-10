@@ -76,7 +76,7 @@ export function createRouter (store) {
       {
         path: '/signup',
         beforeEnter: checkAuth,
-        component: () => import('./views/Signup.vue')
+        component: () => import('./views/SignUp.vue')
       },
       {
         path: '/settings',

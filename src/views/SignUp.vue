@@ -2,7 +2,7 @@
   <div class="columns is-vcentered">
     <div class="column is-4 is-offset-4">
       <div class="box">
-        <form method="post" action="/auth/local/login" @submit="signup">
+        <form v-on:submit.prevent>
           <div class="field">
             <label class="label">Username:</label>
             <p class="control">
@@ -17,7 +17,7 @@
           </div>
           <div class="field is-grouped">
             <p class="control">
-              <button type="submit" class="button is-primary">Sign up</button>
+              <button @click="signUp" class="button is-primary">Sign up</button>
             </p>
             <p class="control">
               <router-link to="/" class="button">Cancel</router-link>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
+
 export default {
   
   data () {
@@ -40,33 +42,15 @@ export default {
   },
   
   methods: {
-    // http://stackoverflow.com/questions/40165766/returning-promises-from-vuex-actions
-    signup () {
-      
-      let data = {
-        action: 'createUser',
+    signUp () {
+      Auth.signUp({
         username: this.username,
         password: this.password
-      }
-      
-      return this.$store.dispatch('callApi', data).then(r => {
-        
-        let apiData = { action: 'copyDefaultFilter' }
-        return this.$store.dispatch('callApi', apiData)
-        
-      }).then(r => {
-        
-        // todo: auto login
-        console.dir(response)
-        
-        return
-        
-      }).catch(error => {
-        
-        // todo: show message to user
-        console.log('signup error')
-        console.dir(error)
-        
+      }).then(user => {
+        //this.$router.push('/signin')
+        console.log(user)
+      }).catch(err => {
+        console.log(err)
       })
     }
   }
