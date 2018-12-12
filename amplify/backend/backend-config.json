@@ -1,0 +1,8 @@
+{
+	"auth": {
+		"vuessrsls": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	}
+}

@@ -1,35 +1,35 @@
 {
 	"providers": {
 		"awscloudformation": {
-			"AuthRoleName": "vuessrserverless-20181130162249-authRole",
-			"UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181130162249-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181130162249-authRole",
+			"AuthRoleName": "vuessrserverless-20181212221317-authRole",
+			"UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181212221317-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181212221317-authRole",
 			"Region": "us-east-1",
-			"DeploymentBucketName": "vuessrserverless-20181130162249-deployment",
-			"UnauthRoleName": "vuessrserverless-20181130162249-unauthRole",
-			"StackName": "vuessrserverless-20181130162249",
-			"StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20181130162249/bfb42990-f470-11e8-b9be-50fae9826c99"
+			"DeploymentBucketName": "vuessrserverless-20181212221317-deployment",
+			"UnauthRoleName": "vuessrserverless-20181212221317-unauthRole",
+			"StackName": "vuessrserverless-20181212221317",
+			"StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20181212221317/b13c1730-fe0f-11e8-a64a-0aab6c3cae14"
 		}
 	},
 	"auth": {
-		"cognitod0a1940e": {
+		"vuessrsls": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181130162249-deployment/amplify-cfn-templates/auth/cognitod0a1940e-cloudformation-template.yml",
-				"logicalId": "authcognitod0a1940e"
+				"s3TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181212221317-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
+				"logicalId": "authvuessrsls"
 			},
-			"lastPushTimeStamp": "2018-11-30T07:30:24.856Z",
+			"lastPushTimeStamp": "2018-12-12T13:21:51.482Z",
 			"output": {
-				"AppClientSecret": "1m3gt8ja1dbhc8659ifru33hfdriqjobq63mj2vnbkj4fbaa78kd",
-				"UserPoolId": "us-east-1_Ct9xubD7S",
-				"AppClientIDWeb": "4o28h4bcbnk071idmpcflufjvd",
-				"AppClientID": "68rdrernnaa2o9dbacgg9iiltq",
-				"IdentityPoolId": "us-east-1:0aaffeb1-4f6d-4ff8-939e-9461ffd86439",
-				"IdentityPoolName": "cognitod0a1940e_identitypool_d0a1940e",
-				"UserPoolName": "cognitod0a1940e_userpool_d0a1940e"
+				"AppClientSecret": "e1kj6j7kktp3llu9km58o0cf07tv7kueq4scsfraia8i183v8vi",
+				"UserPoolId": "us-east-1_KiO5PaPE4",
+				"AppClientIDWeb": "23qn2418u8njs80n99cs52a9qs",
+				"AppClientID": "6vheochnq7u18kp6ifkjplu87b",
+				"IdentityPoolId": "us-east-1:9ef0473c-c077-4ef2-bd7c-4b5585ef7d4a",
+				"IdentityPoolName": "vuessrsls_pool__master",
+				"UserPoolName": "vuessrsls_userpool"
 			},
-			"lastPushDirHash": "AUXDedgT/wculmm01ffaV5XCCOc="
+			"lastPushDirHash": "x+3LHejX11Am6LJAoYeff7oK3uw="
 		}
 	}
 }

@@ -1,0 +1,31 @@
+{
+    "NONE": {
+        "awscloudformation": {
+            "AuthRoleName": "vuessrserverless-20181210225439-authRole",
+            "UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181210225439-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181210225439-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "vuessrserverless-20181210225439-deployment",
+            "UnauthRoleName": "vuessrserverless-20181210225439-unauthRole",
+            "StackName": "vuessrserverless-20181210225439",
+            "StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20181210225439/23f3dda0-fc83-11e8-9c20-50fae98a24fd"
+        }
+    },
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "vuessrserverless-20181212221317-authRole",
+            "UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181212221317-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181212221317-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "vuessrserverless-20181212221317-deployment",
+            "UnauthRoleName": "vuessrserverless-20181212221317-unauthRole",
+            "StackName": "vuessrserverless-20181212221317",
+            "StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20181212221317/b13c1730-fe0f-11e8-a64a-0aab6c3cae14"
+        },
+        "categories": {
+            "auth": {
+                "vuessrsls": {}
+            }
+        }
+    }
+}

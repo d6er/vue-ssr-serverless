@@ -78,26 +78,26 @@
 				}
 			}
 		},
-		"authcognitod0a1940e": {
+		"authvuessrsls": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181130162249-deployment/amplify-cfn-templates/auth/cognitod0a1940e-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181212221317-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
 				"Parameters": {
-					"identityPoolName": "cognitod0a1940e_identitypool_d0a1940e",
+					"identityPoolName": "vuessrsls_pool",
 					"allowUnauthenticatedIdentities": false,
 					"thirdPartyAuth": false,
-					"lambdaLogPolicy": "cognitod0a1940e_lambda_log_policy",
-					"openIdLambdaRoleName": "cognitod0a1940e_openid_lambda_role",
-					"openIdRolePolicy": "cognitod0a1940e_openid_pass_role_policy",
-					"openIdLambdaIAMPolicy": "cognitod0a1940e_openid_lambda_iam_policy",
-					"openIdLogPolicy": "cognitod0a1940e_openid_lambda_log_policy",
-					"userPoolName": "cognitod0a1940e_userpool_d0a1940e",
+					"lambdaLogPolicy": "vuessrsls_lambda_log_policy",
+					"openIdLambdaRoleName": "vuessrsls_openid_lambda_role",
+					"openIdRolePolicy": "vuessrsls_openid_pass_role_policy",
+					"openIdLambdaIAMPolicy": "vuessrsls_openid_lambda_iam_policy",
+					"openIdLogPolicy": "vuessrsls_openid_lambda_log_policy",
+					"userPoolName": "vuessrsls_userpool",
 					"autoVerifiedAttributes": "email",
 					"mfaConfiguration": "OFF",
 					"mfaTypes": "SMS Text Message",
-					"roleName": "cognitod0a1940e_sns-role",
-					"roleExternalId": "cognitod0a1940e_role_external_id",
-					"policyName": "cognitod0a1940e-sns-policy",
+					"roleName": "vuessrsls_sns-role",
+					"roleExternalId": "vuessrsls_role_external_id",
+					"policyName": "vuessrsls-sns-policy",
 					"smsAuthenticationMessage": "Your authentication code is {####}",
 					"smsVerificationMessage": "Your verification code is {####}",
 					"emailVerificationSubject": "Your verification code",
@@ -106,25 +106,40 @@
 					"passwordPolicyMinLength": 8,
 					"passwordPolicyCharacters": "Requires Lowercase,Requires Uppercase,Requires Numbers,Requires Symbols",
 					"requiredAttributes": "email",
-					"userpoolClientName": "cognitod0a1940e_app_client",
+					"userpoolClientName": "vuessrsls_app_client",
 					"userpoolClientGenerateSecret": true,
 					"userpoolClientRefreshTokenValidity": 30,
 					"userpoolClientReadAttributes": "email",
-					"mfaLambdaRole": "cognitod0a1940e_totp_lambda_role",
-					"mfaLambdaLogPolicy": "cognitod0a1940e_totp_lambda_log_policy",
-					"mfaPassRolePolicy": "cognitod0a1940e_totp_pass_role_policy",
-					"mfaLambdaIAMPolicy": "cognitod0a1940e_totp_lambda_iam_policy",
-					"userpoolClientLambdaRole": "cognitod0a1940e_userpoolclient_lambda_role",
-					"userpoolClientLogPolicy": "cognitod0a1940e_userpoolclient_lambda_log_policy",
-					"userpoolClientLambdaPolicy": "cognitod0a1940e_userpoolclient_lambda_iam_policy",
+					"mfaLambdaRole": "vuessrsls_totp_lambda_role",
+					"mfaLambdaLogPolicy": "vuessrsls_totp_lambda_log_policy",
+					"mfaPassRolePolicy": "vuessrsls_totp_pass_role_policy",
+					"mfaLambdaIAMPolicy": "vuessrsls_totp_lambda_iam_policy",
+					"userpoolClientLambdaRole": "vuessrsls_userpoolclient_lambda_role",
+					"userpoolClientLogPolicy": "vuessrsls_userpoolclient_lambda_log_policy",
+					"userpoolClientLambdaPolicy": "vuessrsls_userpoolclient_lambda_iam_policy",
 					"userpoolClientSetAttributes": false,
-					"useDefault": "default",
-					"unAuthRoleName": "vuessrserverless-20181130162249-unauthRole",
-					"authRoleName": "vuessrserverless-20181130162249-authRole",
-					"unAuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181130162249-unauthRole",
-					"authRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181130162249-authRole",
-					"resourceName": "cognitod0a1940e",
-					"authSelections": "identityPoolAndUserPool"
+					"useDefault": "manual",
+					"authSelections": "identityPoolAndUserPool",
+					"resourceName": "vuessrsls",
+					"authRoleName": {
+						"Ref": "AuthRoleName"
+					},
+					"unauthRoleName": {
+						"Ref": "UnauthRoleName"
+					},
+					"authRoleArn": {
+						"Fn::GetAtt": [
+							"AuthRole",
+							"Arn"
+						]
+					},
+					"unauthRoleArn": {
+						"Fn::GetAtt": [
+							"UnauthRole",
+							"Arn"
+						]
+					},
+					"env": "master"
 				}
 			}
 		}

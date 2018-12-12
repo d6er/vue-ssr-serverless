@@ -9,37 +9,6 @@ import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
-/*
-const oauth = {
-  domain : 'sls-d6er-com.auth.us-east-1.amazoncognito.com', 
-  scope : ['phone', 'email', 'profile', 'openid','aws.cognito.signin.user.admin'], 
-  redirectSignIn : 'http://localhost:3000/',
-  redirectSignOut : 'http://localhost:3000/',
-  responseType: 'code',
-  options: {
-    AdvancedSecurityDataCollectionFlag : true
-  }
-}
-*/
-
-/*
-Amplify.configure({
-  Auth: {
-    cookieStorage: {
-      //domain: '.d6er.com',
-      domain: 'localhost',
-      path: '/',
-      expires: 365,
-      secure: true
-    },
-    //oauth: oauth
-  }
-})
-
-const config = Auth.configure();
-console.log(config)
-*/
-
 export function createApp () {
   
   const store = createStore()

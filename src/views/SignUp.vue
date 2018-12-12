@@ -10,6 +10,12 @@
             </p>
           </div>
           <div class="field">
+            <label class="label">Email:</label>
+            <p class="control">
+              <input v-model="email" class="input" placeholder="Email" type="text" name="email">
+            </p>
+          </div>
+          <div class="field">
             <label class="label">Password:</label>
             <p class="control">
               <input v-model="password" class="input" placeholder="Password" type="password" name="password">
@@ -37,6 +43,7 @@ export default {
   data () {
     return {
       username: '',
+      email: '',
       password: ''
     }
   },
@@ -45,7 +52,10 @@ export default {
     signUp () {
       Auth.signUp({
         username: this.username,
-        password: this.password
+        password: this.password,
+        attributes: {
+          email: this.email
+        }
       }).then(user => {
         //this.$router.push('/signin')
         console.log(user)
