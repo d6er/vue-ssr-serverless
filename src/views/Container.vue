@@ -99,7 +99,8 @@ export default {
 
     callAPI () {
       let payload = {
-        foo: 'bar'
+        action: 'copyDefaultFiltersAllLists',
+        user_id: 'nabe'
       }
       this.$store.dispatch('callApi', payload)
     }

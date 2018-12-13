@@ -50,6 +50,7 @@ export default {
   
   methods: {
     signUp () {
+      
       Auth.signUp({
         username: this.username,
         password: this.password,
@@ -57,10 +58,19 @@ export default {
           email: this.email
         }
       }).then(user => {
-        //this.$router.push('/signin')
+        
         console.log(user)
+        
+        // todo: copy default filters
+        let payload = {
+          action: 'copyDefaultFilters'
+        }
+        this.$store.dispatch('callApi', payload)
+        
       }).catch(err => {
+        
         console.log(err)
+        
       })
     }
   }
