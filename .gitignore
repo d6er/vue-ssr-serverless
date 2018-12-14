@@ -1,7 +1,9 @@
+config/server.js
+dist
 node_modules
 jspm_packages
-.serverless
 package-lock.json
+.serverless
 
 #amplify
 amplify/\#current-cloud-backend

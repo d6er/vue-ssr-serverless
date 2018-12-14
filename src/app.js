@@ -8,6 +8,16 @@ import { sync } from 'vuex-router-sync'
 import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
+/*
+Amplify.configure({
+  Auth: {
+    region: 'us-east-1',
+    cookieStorage: {
+      domain: 'localhost',
+    }
+  }
+})
+*/
 
 export function createApp () {
   
@@ -16,6 +26,14 @@ export function createApp () {
   
   sync(store, router)
   
+  // moved from entry-client.js due to initial requireAuth failure at client.
+  if (typeof window !== 'undefined') {
+    if (window.__INITIAL_STATE__) {
+      store.replaceState(window.__INITIAL_STATE__)
+      //store.dispatch('setApiListener')
+    }
+  }
+
   Auth.currentAuthenticatedUser().then(user => {
     console.log('[app.js user]')
     console.log(user)
