@@ -8,16 +8,6 @@ import { sync } from 'vuex-router-sync'
 import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
-/*
-Amplify.configure({
-  Auth: {
-    region: 'us-east-1',
-    cookieStorage: {
-      domain: 'localhost',
-    }
-  }
-})
-*/
 
 export function createApp () {
   

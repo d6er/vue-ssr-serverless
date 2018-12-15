@@ -34,9 +34,23 @@ export function createStore () {
     },
     
     actions: {
-      callApi ({ commit, state }, payload) {
-        api.call(payload).then(result => {
-          console.log(result)
+      callApi ({ commit, state }, data) {
+        
+        data.user_id = state.user.username
+        
+        return api.call(data).then(result => {
+          
+          console.log('[store.js callApi() result]')
+          console.dir(result.data)
+          
+          let payload = {
+            result: result.data,
+            callData: data
+          }
+          
+          if (data.action == 'fetchFilterTree') {
+            commit('setFilterTree', payload)
+          }
         })
       }
     },
@@ -54,8 +68,12 @@ export function createStore () {
 
       unsetUser (state) {
         Vue.set(state, 'user', null)
-      }
+      },
       
+      setFilterTree (state, payload) {
+        let list = state.lists.find(l => l.name == payload.callData.listName)
+        Vue.set(list, 'filterTree', payload.result)
+      }
     }
   })
 }

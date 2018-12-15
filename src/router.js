@@ -21,7 +21,7 @@ export function createRouter (store) {
   function checkAuth (to, from, next) {
     Auth.currentAuthenticatedUser().then(user => {
       //let path = '/' + store.state.lists[0].name + '/' + store.state.lists[0].filters[0].name
-      let path = '/emails'
+      let path = '/emails/inbox'
       next(path)
     }).catch(err => {
       next()

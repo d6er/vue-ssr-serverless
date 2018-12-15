@@ -48,6 +48,11 @@
                 Call API
               </a>
             </li>
+            <li>
+              <a @click="fetchFilterTree">
+                Fetch Filters
+              </a>
+            </li>
           </ul>
         </aside>
       </div>
@@ -101,6 +106,15 @@ export default {
       let payload = {
         action: 'copyDefaultFiltersAllLists',
         user_id: 'nabe'
+      }
+      this.$store.dispatch('callApi', payload)
+    },
+    
+    fetchFilterTree () {
+      let payload = {
+        action: 'fetchFilterTree',
+        user_id: 'nabe',
+        listName: this.$route.params.list
       }
       this.$store.dispatch('callApi', payload)
     }

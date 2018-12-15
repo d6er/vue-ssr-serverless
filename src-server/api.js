@@ -14,20 +14,32 @@ module.exports.index = (event, context, callback) => {
     
     const api = require('./api/index.js')
     
-    if (api.hasOwnProperty(payload.action)) {
-      api[payload.action](payload).then(r => {
-        console.log(r)
-      }).catch(e => {
-        console.log(e)
-      })
+    if (!api.hasOwnProperty(payload.action)) {
+      
+      const response = {
+        statusCode: 200,
+        body: 'no action'
+      }
+      
+      callback(null, response)
+      
+      return
     }
-        
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(event.body)
-    }
-
-    callback(null, response)
+    
+    api[payload.action](payload).then(r => {
+      
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(r)
+      }
+      
+      callback(null, response)
+      
+    }).catch(e => {
+      
+      console.log(e)
+      
+    })
     
   })
   

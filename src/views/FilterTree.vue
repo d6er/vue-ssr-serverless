@@ -40,6 +40,16 @@ export default {
     return store.dispatch('callApi', apiData)
   },
   
+  beforeRouteUpdate (to, from, next) {
+    let apiData = {
+      action: 'fetchFilterTree',
+      listName: to.params.list
+    }
+    this.$store.dispatch('callApi', apiData).then(r => {
+      next()
+    })
+  },
+
   computed: {
     depth () {
       return this.arrPath.length
