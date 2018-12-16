@@ -1,6 +1,7 @@
 // https://team.goodeggs.com/export-this-interface-design-patterns-for-node-js-modules-b48a3b1f8f40
 const MongoClient = require('mongodb').MongoClient
 
+let client
 let db
 
 const actions = {
@@ -10,7 +11,8 @@ const actions = {
       if (db) {
         resolve(db)
       } else {
-        return MongoClient.connect(url).then(client => {
+        return MongoClient.connect(url, { useNewUrlParser: true }).then(clientObj => {
+          client = clientObj
           db = client.db('test')
           resolve(db)
         })
