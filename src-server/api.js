@@ -46,8 +46,6 @@ module.exports.index = (event, context, callback) => {
         body: JSON.stringify(r)
       }
       
-      console.log(response)
-      
       callback(null, response)
       
     }).catch(e => {

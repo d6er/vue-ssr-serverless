@@ -12,7 +12,7 @@
           <div class="field">
             <label class="label">Password:</label>
             <p class="control">
-              <input class="input" placeholder="Password" type="password" name="password" v-model="password">
+              <input class="input" placeholder="Password" type="password" name="password" v-model="password" autocomplete="current-password">
             </p>
           </div>
           <div class="field is-grouped">

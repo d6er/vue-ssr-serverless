@@ -3,6 +3,10 @@ import mongo from '../src-server/mongo'
 //import { createApp } from './app' // note: moved to inside Promise
 import { Auth } from 'aws-amplify'
 
+// https://github.com/aws-amplify/amplify-js/issues/493#issuecomment-386161756
+import fetch from 'node-fetch'
+global.fetch = global.fetch || fetch
+
 export default context => {
   
   return new Promise((resolve, reject) => {
@@ -44,6 +48,30 @@ export default context => {
           console.log(user)
         }).catch(err => {
           console.log('[entry-server err]')
+          console.log(err)
+        })
+        
+        Auth.currentUserPoolUser().then(user => {
+          console.log('[entry-server currentUserPoolUser]')
+          console.log(user)
+        }).catch(err => {
+          console.log('[entry-server currentUserPoolUser err]')
+          console.log(err)
+        })
+        
+        Auth.currentUserInfo().then(user => {
+          console.log('[entry-server currentUserInfo]')
+          console.log(user)
+        }).catch(err => {
+          console.log('[entry-server currentUserInfo err]')
+          console.log(err)
+        })
+        
+        Auth.currentSession().then(user => {
+          console.log('[entry-server currentSession]')
+          console.log(user)
+        }).catch(err => {
+          console.log('[entry-server currentSession err]')
           console.log(err)
         })
         

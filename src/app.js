@@ -9,6 +9,16 @@ import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
+/* Cookie */
+Amplify.configure({
+  Auth: {
+    cookieStorage: {
+      domain: '.d6er.com'
+    }
+  }
+})
+
+
 export function createApp () {
   
   const store = createStore()
