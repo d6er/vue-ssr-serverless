@@ -12,7 +12,9 @@ export default class CustomStorage {
    * @param {boolean} data.secure Cookie secure flag (default: true)
    */
   constructor(data) {
+    console.log('[Storage constructor]')
     Object.keys(data).forEach(key => {
+      console.log(key)
       this[key] = data[key]
     })
   }
@@ -24,14 +26,9 @@ export default class CustomStorage {
    * @returns {string} value that was set
    */
   setItem(key, value) {
-    Cookies.set(key, value, {
-      path: this.path,
-      expires: this.expires,
-      domain: this.domain,
-      secure: this.secure,
-    }
-    );
-    return Cookies.get(key);
+    console.log('[Storage setItem] ' + key + ' ' + value)
+    this[key] = value
+    return value
   }
 
   /**
@@ -41,9 +38,8 @@ export default class CustomStorage {
    * @returns {string} the data item
    */
   getItem(key) {
-    console.log('CustomStorage getItem: ' + key)
-    //return Cookies.get(key);
-    return "nabe";
+    console.log('[Storage getItem] ' + key)
+    return this[key]
   }
 
   /**
@@ -52,6 +48,7 @@ export default class CustomStorage {
    * @returns {string} value - value that was deleted
    */
   removeItem(key) {
+    console.log('[Storage removeItem] ' + key)
     return Cookies.remove(key, {
       path: this.path,
       domain: this.domain,
@@ -65,6 +62,7 @@ export default class CustomStorage {
    * @returns {string} nothing
    */
   clear() {
+    console.log('[Storage clear]')
     const cookies = Cookies.get();
     let index;
     for (index = 0; index < cookies.length; ++index) {
