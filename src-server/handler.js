@@ -8,6 +8,8 @@ const template = fs.readFileSync('./src/index.template.html', 'utf-8')
 const serverBundle = require('../dist/vue-ssr-server-bundle.json')
 const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 
+const cookie = require('cookie')
+
 const renderer = createBundleRenderer(serverBundle, {
   runInNewContext: false,
   template,
@@ -19,9 +21,16 @@ module.exports.index = (event, context, callback) => {
   // https://github.com/aws-amplify/amplify-js/issues/1460
   context.callbackWaitsForEmptyEventLoop = false;
   
+  const cookies = cookie.parse(event.Cookie)
+  console.log('[handler.js event]')
+  console.log(event)
+  console.log('[handler.js context]')
+  console.log(context)
+  
   const appContext = {
     url: event.path,
-    title: 'Vue SSR Serverless'
+    cookies: cookies,
+    title: 'Vue SSR Serverless',
   }
   
   renderer.renderToString(appContext, (err, html) => {
