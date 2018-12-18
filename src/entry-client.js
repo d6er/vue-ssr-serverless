@@ -1,8 +1,35 @@
 import { createApp } from './app'
 
-import { Auth, Hub, Logger } from 'aws-amplify';
+import Amplify, { Auth, Hub, Logger } from 'aws-amplify';
+
+import LocalCookieStorage from '../src-server/LocalCookieStorage'
 
 const { app, router, store } = createApp()
+import aws_exports from './aws-exports'
+Amplify.configure(aws_exports)
+
+const cookieDomain = '.' + window.location.hostname
+console.log('cookieDomain: ' + cookieDomain)
+
+if (window.location.hostname == 'localhost') {
+  
+  Amplify.configure({
+    Auth: {
+      storage: new LocalCookieStorage()
+    }
+  })
+
+} else {
+
+  Amplify.configure({
+    Auth: {
+      cookieStorage: {
+        domain: cookieDomain,
+      }
+    }
+  })
+  
+}
 
 Auth.currentAuthenticatedUser().then(user => {
   console.log('[entry-client.js user]')

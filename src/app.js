@@ -5,11 +5,16 @@ import { createStore } from './store'
 import { sync } from 'vuex-router-sync'
 
 /* Amplify */
+/*
 import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
+*/
+console.log('[process.env]')
+console.log(process.env)
 
 /* Cookie */
+/*
 Amplify.configure({
   Auth: {
     cookieStorage: {
@@ -17,7 +22,7 @@ Amplify.configure({
     }
   }
 })
-
+*/
 
 export function createApp () {
   
@@ -34,6 +39,7 @@ export function createApp () {
     }
   }
 
+  /*
   Auth.currentAuthenticatedUser().then(user => {
     console.log('[app.js user]')
     console.log(user)
@@ -41,8 +47,10 @@ export function createApp () {
     console.log('[app.js err]')
     console.log(err)
   })
+  */
   
   // Hub
+  /*
   const alex = new Logger('Alexander_the_auth_watcher')
   alex.onHubCapsule = (capsule) => {
     console.log('[app.js Hub] ' + capsule.payload.event)
@@ -53,7 +61,8 @@ export function createApp () {
     }
   }
   Hub.listen('auth', alex)
-
+  */
+  
   const app = new Vue({
     router,
     store,

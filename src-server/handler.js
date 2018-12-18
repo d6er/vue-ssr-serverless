@@ -25,7 +25,7 @@ module.exports.index = (event, context, callback) => {
   console.log(event.headers)
   console.log('[handler.js context]')
   console.log(context)
-  const cookies = cookie.parse(event.headers.Cookie)
+  const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
   
   const appContext = {
     url: event.path,
