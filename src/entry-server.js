@@ -29,22 +29,31 @@ export default context => {
       
       return new Promise((resolve, reject) => {
 
-        // fetch filter data and set to store (for redirect from / path)
-        let query = {
-          //user_id: context.user._id,
-          user_id: 'nabe'
-        }
-        // todo: exclude user_id from result
-        db.collection('filters').find(query).toArray().then(filters => {
-          store.state.lists.forEach(list => {
-            list.filters = filters.filter(f => f.list == list.name)
+        Auth.currentAuthenticatedUser().then(user => {
+          
+          store.state.user = user
+          
+          // fetch filter data and set to store (for redirect from / path)
+          let query = {
+            user_id: store.state.user.username
+          }
+          // todo: exclude user_id from result
+          db.collection('filters').find(query).toArray().then(filters => {
+            store.state.lists.forEach(list => {
+              list.filters = filters.filter(f => f.list == list.name)
+            })
+            return
+          }).then(() => {
+            db.collection('accounts').find(query).toArray().then(accounts => {
+              store.state.accounts = accounts
+            })
+            resolve()
           })
-        }).then(() => {
-          db.collection('accounts').find(query).toArray().then(accounts => {
-            store.state.accounts = accounts
-          })
+          
+        }).catch(e => {
           resolve()
         })
+  
 
       }).then(() => {
         
@@ -53,10 +62,10 @@ export default context => {
         router.onReady(() => {
           
           const matchedComponents = router.getMatchedComponents()
-          
           if (!matchedComponents.length) {
-            return reject({ code: 404 })
+            reject({ code: 404 })
           }
+          console.dir(matchedComponents)
           
           context.state = store.state
           resolve(app)
