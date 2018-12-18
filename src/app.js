@@ -4,26 +4,6 @@ import { createRouter } from './router'
 import { createStore } from './store'
 import { sync } from 'vuex-router-sync'
 
-/* Amplify */
-/*
-import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
-import aws_exports from './aws-exports'
-Amplify.configure(aws_exports)
-*/
-console.log('[process.env]')
-console.log(process.env)
-
-/* Cookie */
-/*
-Amplify.configure({
-  Auth: {
-    cookieStorage: {
-      domain: '.d6er.com'
-    }
-  }
-})
-*/
-
 export function createApp () {
   
   const store = createStore()
@@ -39,30 +19,6 @@ export function createApp () {
     }
   }
 
-  /*
-  Auth.currentAuthenticatedUser().then(user => {
-    console.log('[app.js user]')
-    console.log(user)
-  }).catch(err => {
-    console.log('[app.js err]')
-    console.log(err)
-  })
-  */
-  
-  // Hub
-  /*
-  const alex = new Logger('Alexander_the_auth_watcher')
-  alex.onHubCapsule = (capsule) => {
-    console.log('[app.js Hub] ' + capsule.payload.event)
-    switch (capsule.payload.event) {
-    case 'signIn':
-      //store.commit('setUser', capsule.payload.data)
-      break;
-    }
-  }
-  Hub.listen('auth', alex)
-  */
-  
   const app = new Vue({
     router,
     store,

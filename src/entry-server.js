@@ -4,7 +4,7 @@ import CustomStorage from '../src-server/CustomStorage'
 //import { createApp } from './app' // note: moved to inside Promise
 
 /* Amplify */
-import Amplify, { Auth, Hub, Logger } from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
@@ -35,14 +35,11 @@ export default context => {
           user_id: 'nabe'
         }
         // todo: exclude user_id from result
-        console.log('===[filters]===')
         db.collection('filters').find(query).toArray().then(filters => {
-          console.log(filters)
           store.state.lists.forEach(list => {
             list.filters = filters.filter(f => f.list == list.name)
           })
         }).then(() => {
-          console.log('===[accounts]===')
           db.collection('accounts').find(query).toArray().then(accounts => {
             store.state.accounts = accounts
           })
@@ -50,40 +47,6 @@ export default context => {
         })
 
       }).then(() => {
-        
-        // https://github.com/aws-amplify/amplify-js/issues/493
-
-        Auth.currentAuthenticatedUser().then(user => {
-          console.log('[entry-server user]')
-          console.log(user)
-        }).catch(err => {
-          console.log('[entry-server err]')
-          console.log(err)
-        })
-        
-        Auth.currentUserPoolUser().then(user => {
-          console.log('[entry-server currentUserPoolUser]')
-          console.log(user)
-        }).catch(err => {
-          console.log('[entry-server currentUserPoolUser err]')
-          console.log(err)
-        })
-        
-        Auth.currentUserInfo().then(user => {
-          console.log('[entry-server currentUserInfo]')
-          console.log(user)
-        }).catch(err => {
-          console.log('[entry-server currentUserInfo err]')
-          console.log(err)
-        })
-        
-        Auth.currentSession().then(user => {
-          console.log('[entry-server currentSession]')
-          console.log(user)
-        }).catch(err => {
-          console.log('[entry-server currentSession err]')
-          console.log(err)
-        })
         
         router.push(context.url)
         
@@ -95,6 +58,7 @@ export default context => {
             return reject({ code: 404 })
           }
           
+          context.state = store.state
           resolve(app)
           
         }, reject)
