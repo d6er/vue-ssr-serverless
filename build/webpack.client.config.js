@@ -7,6 +7,12 @@ module.exports = merge(baseConfig, {
 
   entry: './src/entry-client.js',
 
+  resolve: {
+    alias: {
+      'api': './api/api-client.js'
+    }
+  },
+
   plugins: [
     new VueSSRClientPlugin()
   ]

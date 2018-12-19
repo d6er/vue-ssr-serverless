@@ -13,6 +13,12 @@ module.exports = merge(baseConfig, {
     libraryTarget: 'commonjs2'
   },
   
+  resolve: {
+    alias: {
+      'api': './api/api-server.js'
+    }
+  },
+  
   externals: nodeExternals({
     whitelist: /\.css$/
   }),

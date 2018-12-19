@@ -21,10 +21,6 @@ module.exports.index = (event, context, callback) => {
   // https://github.com/aws-amplify/amplify-js/issues/1460
   context.callbackWaitsForEmptyEventLoop = false;
   
-  console.log('[handler.js event]')
-  console.log(event.headers)
-  console.log('[handler.js context]')
-  console.log(context)
   const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
   
   const appContext = {

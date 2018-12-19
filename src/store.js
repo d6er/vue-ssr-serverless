@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import api from './api'
+import api from 'api'
 
 import config from '../config/client'
 

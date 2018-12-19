@@ -10,8 +10,6 @@ Amplify.configure(aws_exports)
 
 export default context => {
   
-  console.log(context)
-  
   /* Cookie */
   Amplify.configure({
     Auth: {
@@ -65,8 +63,19 @@ export default context => {
           if (!matchedComponents.length) {
             reject({ code: 404 })
           }
-          console.dir(matchedComponents)
           
+          Promise.all(matchedComponents.map(Component => {
+            if (Component.asyncData) {
+              console.log(Component.__file)
+              return Component.asyncData({ store, route: router.currentRoute })
+            }
+          })).then(() => {
+            console.log('async ok')
+          }).catch(e => {
+            console.log('async error')
+            console.log(e)
+          })
+                      
           context.state = store.state
           resolve(app)
           
