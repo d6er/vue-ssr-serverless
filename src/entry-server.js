@@ -69,14 +69,13 @@ export default context => {
               return Component.asyncData({ store, route: router.currentRoute })
             }
           })).then(() => {
-            console.log('async ok')
+            context.state = store.state
+            resolve(app)
           }).catch(e => {
             console.log('async error')
             console.log(e)
           })
                       
-          context.state = store.state
-          resolve(app)
           
         }, reject)
         

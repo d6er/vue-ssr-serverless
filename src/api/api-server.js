@@ -14,17 +14,21 @@ export default {
       FunctionName: 'vue-ssr-serverless-dev-api',
       //InvocationType: 'RequestResponse',
       //LogType: 'Tail',
-      Payload: JSON.stringify(payload)
+      Payload: JSON.stringify({ body: JSON.stringify(payload) })
     }
     
+    console.log('[api-server]')
+    console.log(params)
+    
     return new Promise((resolve, reject) => {
-      lambda.invoke(params, function(err, data) {
+      lambda.invoke(params, function(err, result) {
         if (err) {
           reject(err)
         } else {
           console.log('[api-server]')
-          console.log(data)
-          resolve(data)
+          console.log(result)
+          let resultPayload = JSON.parse(result.Payload)
+          resolve({ data: JSON.parse(resultPayload.body) })
         }
       })
     })

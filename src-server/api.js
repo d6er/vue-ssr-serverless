@@ -7,6 +7,10 @@ const mongo = require('./mongo')
 
 module.exports.index = (event, context, callback) => {
 
+  console.log('[api.js]')
+  console.log(event)
+  console.log(context)
+  
   // https://github.com/aws-amplify/amplify-js/issues/1460
   context.callbackWaitsForEmptyEventLoop = false;
   

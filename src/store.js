@@ -71,6 +71,8 @@ export function createStore () {
       },
       
       setFilterTree (state, payload) {
+        console.log('[store.js setFilterTree]')
+        console.dir(payload)
         let list = state.lists.find(l => l.name == payload.callData.listName)
         Vue.set(list, 'filterTree', payload.result)
       }
