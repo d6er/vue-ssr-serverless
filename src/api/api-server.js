@@ -11,8 +11,8 @@ export default {
   call (payload) {
     
     let params = {
-      FunctionName: 'api',
-      InvocationType: 'RequestResponse',
+      FunctionName: 'vue-ssr-serverless-dev-api',
+      //InvocationType: 'RequestResponse',
       //LogType: 'Tail',
       Payload: JSON.stringify(payload)
     }
@@ -22,6 +22,8 @@ export default {
         if (err) {
           reject(err)
         } else {
+          console.log('[api-server]')
+          console.log(data)
           resolve(data)
         }
       })
