@@ -21,6 +21,13 @@ functions:
           method: POST
           path: /api
 
+  auth:
+    handler: src-server/auth.index
+    events:
+      - http:
+          method: GET
+          path: /auth
+
 package:
   exclude:
     - node_modules/.cache/**

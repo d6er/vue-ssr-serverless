@@ -33,16 +33,11 @@ module.exports.index = (event, context, callback) => {
     
     if (err) {
       
-      console.log(err)
-      
       const response = {
         statusCode: 500,
-        headers: {
-          "Content-Type": "text/html"
-        },
+        headers: { "Content-Type": "text/html" },
         body: err
       }
-      
       callback(err, response)
       
     } else {
@@ -52,7 +47,6 @@ module.exports.index = (event, context, callback) => {
         headers: { "Content-Type": "text/html" },
         body: html
       }
-      
       callback(null, response)
       
     }
