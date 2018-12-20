@@ -4,7 +4,6 @@ export default class CustomStorage {
 
   constructor(data) {
     Object.keys(data).forEach(key => {
-      console.log(key)
       this[key] = data[key]
     })
   }

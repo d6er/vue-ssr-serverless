@@ -11,41 +11,12 @@
 <script>
 import Navbar from './views/Navbar.vue'
 import NavbarGuest from './views/NavbarGuest.vue'
-import { Auth, Hub, Logger } from 'aws-amplify';
-
-// Hub
-const alex = new Logger('Alexander_the_auth_watcher');
-alex.onHubCapsule = (capsule) => {
-  console.log('[App.vue Hub] ' + capsule.payload.event)
-  switch (capsule.payload.event) {
-  case 'signIn':
-    //this.$store.commit('setUser', capsule.payload.data)
-    break;
-  case 'configured':
-    //this.$store.commit('setUser', capsule.payload.data)
-    break;
-  }
-}
-Hub.listen('auth', alex);
 
 export default {
-  
-  mounted: function () {
-    Auth.currentAuthenticatedUser().then(user => {
-      console.log('[App.vue user]')
-      console.log(user)
-      this.$store.commit('setUser', user)
-    }).catch(err => {
-      console.log('[App.vue err]')
-      console.log(err)
-    })
-  },
-
   components: {
     Navbar: Navbar,
     NavbarGuest: NavbarGuest
   }
-  
 }
 </script>
 

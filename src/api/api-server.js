@@ -23,7 +23,9 @@ export default {
     return new Promise((resolve, reject) => {
       lambda.invoke(params, function(err, result) {
         if (err) {
-          reject(err)
+          console.log('[api-server lambda.invoke error]')
+          console.log(err)
+          resolve({ data: err })
         } else {
           console.log('[api-server]')
           console.log(result)

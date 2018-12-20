@@ -1,30 +1,32 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import config from '../config/client'
-import { Auth } from 'aws-amplify'
 
 Vue.use(Router)
 
 export function createRouter (store) {
   
+  // https://medium.com/@bradfmd/vue-js-setting-up-auth0-6eb26cbbc48a
   function requireAuth (to, from, next) {
-    Auth.currentAuthenticatedUser().then(user => {
+    if (store.state.user) {
       next()
-    }).catch(err => {
+    } else {
+      console.log('requireAuth NG')
       next({
         path: '/signin',
         query: { redirect: to.fullPath }
       })
-    })
+    }
   }
   
   function checkAuth (to, from, next) {
-    Auth.currentAuthenticatedUser().then(user => {
+    if (store.state.user) {
       let path = '/' + store.state.lists[0].name + '/' + store.state.lists[0].filters[0].name
       next(path)
-    }).catch(err => {
+    } else {
+      console.log('checkAuth NG')
       next()
-    })
+    }
   }
   
   let listsRegExp = store.state.lists.map(list => list.name).join('|')
