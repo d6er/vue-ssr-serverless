@@ -44,7 +44,15 @@ export default {
   methods: {
     signIn () {
       Auth.signIn(this.username, this.password).then(user => {
-        this.$router.push('/')
+        
+        // todo: copy default filters
+        let payload = {
+          action: 'copyDefaultFilters'
+        }
+        this.$store.dispatch('callApi', payload)
+        
+        //this.$router.push('/')
+        
       }).catch(err => {
         console.log(err)
       })

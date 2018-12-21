@@ -27,3 +27,19 @@ module.exports.index = (event, context, callback) => {
   }
   callback(null, response)
 }
+
+module.exports.oauthcallback = async (event) => {
+  
+  const {tokens} = await oauth2Client.getToken(event.queryStringParameters.code)
+  console.log('[tokens]')
+  console.log(tokens)
+  oauth2Client.setCredentials(tokens)
+  
+  const response = {
+    statusCode: 200,
+    headers: { "Content-Type": "text/html" },
+    body: 'oauthcallback-done'
+  }
+  
+  return response
+}

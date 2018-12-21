@@ -28,6 +28,13 @@ functions:
           method: GET
           path: /auth
 
+  oauthcallback:
+    handler: src-server/auth.oauthcallback
+    events:
+      - http:
+          method: GET
+          path: /auth/google/callback
+
 package:
   exclude:
     - node_modules/.cache/**

@@ -29,6 +29,17 @@
               <router-link to="/" class="button">Cancel</router-link>
             </p>
           </div>
+          <div class="field">
+            <label class="label">Code:</label>
+            <p class="control">
+              <input v-model="code" class="input" placeholder="Code" type="text" name="code">
+            </p>
+          </div>
+          <div class="field is-grouped">
+            <p class="control">
+              <button @click="confirmSignUp" class="button is-primary">Confirm sign up</button>
+            </p>
+          </div>
         </form>
       </div>
     </div>
@@ -44,19 +55,19 @@ export default {
     return {
       username: '',
       email: '',
-      password: ''
+      password: '',
+      code: ''
     }
   },
   
   methods: {
+    
     signUp () {
       
       Auth.signUp({
         username: this.username,
         password: this.password,
-        attributes: {
-          email: this.email
-        }
+        attributes: { email: this.email }
       }).then(user => {
         
         console.log(user)
@@ -65,12 +76,26 @@ export default {
         let payload = {
           action: 'copyDefaultFilters'
         }
-        this.$store.dispatch('callApi', payload)
+        //this.$store.dispatch('callApi', payload)
         
       }).catch(err => {
         
         console.log(err)
         
+      })
+    },
+
+    confirmSignUp () {
+      
+      Auth.confirmSignUp(this.username, this.code, {
+        forceAliasCreation: true    
+      }).then(data => {
+        
+        console.log('[confirmSignUp]')
+        console.log(data)
+        
+      }).catch(err => {
+        console.log(err)
       })
     }
   }
