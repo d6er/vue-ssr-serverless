@@ -107,17 +107,23 @@ export function createStore () {
     
     mutations: {
       
-      setItem (state, { id, item }) {
-        Vue.set(state.items, id, item)
+      // Item
+      // todo: use constant for function names.
+      // https://vuex.vuejs.org/en/mutations.html
+      setItems (state, payload) {
+        // todo: set current list
+        state.paging = payload.result.paging
+        state.mergedFilter = payload.result.mergedFilter
+        
+        let list = state.lists.find(l => l.name == payload.callData.list)
+        list.items = []
+        payload.result.items.forEach((item, index) => {
+          Vue.set(list.items, index, item)
+        })
       },
       
-      setUser (state, user) {
-        console.log('store.js setUser')
-        Vue.set(state, 'user', user)
-      },
-
-      unsetUser (state) {
-        Vue.set(state, 'user', null)
+      setItem (state, { id, item }) {
+        Vue.set(state.items, id, item)
       },
       
       setFilterTree (state, payload) {

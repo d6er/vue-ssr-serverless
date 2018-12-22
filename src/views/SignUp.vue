@@ -68,36 +68,28 @@ export default {
   methods: {
     
     signUp () {
-      
       Auth.signUp({
         username: this.username,
         password: this.password,
         attributes: { email: this.email }
       }).then(user => {
-        
         this.state = 'confirm'
         console.log(user)
-        
       }).catch(err => {
-        
         console.log(err)
-        
       })
     },
 
     confirmSignUp () {
-      
       Auth.confirmSignUp(this.username, this.code, {
         forceAliasCreation: true    
       }).then(data => {
-        
         Auth.signIn(this.username, this.password).then(user => {
           let payload = {
             action: 'initializeUser'
           }
           this.$store.dispatch('callApi', payload)
         })
-        
       }).catch(err => {
         console.log(err)
       })

@@ -40,17 +40,10 @@
             </li>
             <li>
               <a @click="signOut">
+                <span class="icon">
+                  <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                </span>
                 Sign Out
-              </a>
-            </li>
-            <li>
-              <a @click="callAPI">
-                Call API
-              </a>
-            </li>
-            <li>
-              <a @click="fetchFilterTree">
-                Fetch Filters
               </a>
             </li>
           </ul>
@@ -64,28 +57,9 @@
 </template>
 
 <script>
-import { Auth, Hub, Logger } from 'aws-amplify';
-
-// Hub
-const alex = new Logger('Alexander_the_auth_watcher')
-alex.onHubCapsule = (capsule) => {
-  console.log('[Container.vue Hub] ' + capsule.payload.event)
-}
-Hub.listen('auth', alex)
+import { Auth } from 'aws-amplify'
 
 export default {
-  
-  computed: {
-    
-    username () {
-      if (this.$store.state.user.google) {
-        return this.$store.state.user.google.displayName
-      } else {
-        return this.$store.state.user.username
-      }
-    },
-
-  },
   
   methods: {
     
@@ -95,29 +69,11 @@ export default {
     
     signOut () {
       Auth.signOut().then(data => {
-        this.$store.commit('unsetUser')
         this.$router.push('/')
       }).catch(err => {
         console.log(err)
       })
     },
-
-    callAPI () {
-      let payload = {
-        action: 'copyDefaultFiltersAllLists',
-        user_id: 'nabe'
-      }
-      this.$store.dispatch('callApi', payload)
-    },
-    
-    fetchFilterTree () {
-      let payload = {
-        action: 'fetchFilterTree',
-        user_id: 'nabe',
-        listName: this.$route.params.list
-      }
-      this.$store.dispatch('callApi', payload)
-    }
   }
 }
 

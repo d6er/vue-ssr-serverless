@@ -1,17 +1,9 @@
 'use strict'
 
-require = require("esm")(module)
+require = require("esm")(module/*, options*/)
 
-const config = require('../config/server')
-const mongo = require('./mongo')
 const cookie = require('cookie')
-
-/* Amplify */
-const Amplify = require('aws-amplify').default
-const { Auth } = require('aws-amplify')
-const aws_exports = require('../src/aws-exports')
-const CustomStorage = require('./CustomStorage').default
-Amplify.configure(aws_exports)
+const api2 = require('./api2').default
 
 module.exports.index = async (event, context) => {
 
@@ -19,35 +11,9 @@ module.exports.index = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   
   const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
-  
-  Amplify.configure({
-    Auth: {
-      storage: new CustomStorage(cookies)
-    }
-  })
-  
-  const user = await Auth.currentAuthenticatedUser()
-
-  console.log('[api.js] username: ' + user.username)
-  
-  /*
-  
-  Auth.currentUserInfo().then(user => {
-    console.log(user)
-  })
-  */
-  
   const payload = JSON.parse(event.body)
   
-  console.log(payload)
-  
-  payload.user = user
-  
-  const db = await mongo.connect(config.mongo_url)
-  
-  const api = require('./api/index.js')
-  
-  const result = await api[payload.action](payload)
+  const result = await api2(cookies, payload)
     
   const response = {
     statusCode: 200,

@@ -3,6 +3,10 @@ import mongo from '../src-server/mongo'
 import CustomStorage from '../src-server/CustomStorage'
 //import { createApp } from './app' // note: moved to inside Promise
 
+// https://github.com/aws-amplify/amplify-js/issues/493#issuecomment-386161756
+import fetch from 'node-fetch'
+global.fetch = global.fetch || fetch
+
 /* Amplify */
 import Amplify, { Auth } from 'aws-amplify'
 import aws_exports from './aws-exports'
