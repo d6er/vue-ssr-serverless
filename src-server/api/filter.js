@@ -27,8 +27,8 @@ const methods = {
     } else {
       
       // create a new filter
-      return mongo.getNextId(coll).then(r => {
-        filter._id = r.value.seq
+      return mongo.getNextId(coll).then(seq => {
+        filter._id = seq
         return db.collection(coll).insertOne(filter)
       }).then(r => {
         return methods.fetchFilters({ user_id: user_id, listName: listName })
@@ -76,9 +76,9 @@ const methods = {
     let coll = 'filters'
     
     let copies = list.defaultFilters.map(filter => {
-      return mongo.getNextId(coll).then(r => {
+      return mongo.getNextId(coll).then(seq => {
         return Object.assign({
-          _id: r.value.seq,
+          _id: seq,
           user_id: user_id,
           list: listName
         }, filter)

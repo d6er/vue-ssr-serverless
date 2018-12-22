@@ -39,8 +39,6 @@ export function createStore () {
     actions: {
       callApi ({ commit, state }, data) {
         
-        data.user_id = state.user.username
-        
         return api.call(data).then(result => {
           
           console.log('[store.js callApi() result]')

@@ -13,57 +13,50 @@ const aws_exports = require('../src/aws-exports')
 const CustomStorage = require('./CustomStorage').default
 Amplify.configure(aws_exports)
 
-module.exports.index = (event, context, callback) => {
+module.exports.index = async (event, context) => {
 
   // https://github.com/aws-amplify/amplify-js/issues/1460
   context.callbackWaitsForEmptyEventLoop = false;
   
   const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
   
-  /* Cookie */
   Amplify.configure({
     Auth: {
       storage: new CustomStorage(cookies)
     }
   })
   
-  Auth.currentAuthenticatedUser().then(user => {
-    console.log('[api.js user]')
-    console.log(user)
-    
-    Auth.updateUserAttributes(user, {
-      'custom:user_id': '223344'
-    }).then(r => {
-      console.log('[update attr]')
-      console.log(r)
-    });
-  })
+  const user = await Auth.currentAuthenticatedUser()
+
+  console.log('[api.js] username: ' + user.username)
+  
+  /*
   
   Auth.currentUserInfo().then(user => {
     console.log(user)
   })
+  */
   
-  let payload = JSON.parse(event.body)
+  const payload = JSON.parse(event.body)
   
-  mongo.connect(config.mongo_url).then(db => {
-    
-    const api = require('./api/index.js')
-    
-    api[payload.action](payload).then(r => {
-      
-      const response = {
-        statusCode: 200,
-        headers: { "Content-Type": "text/html" },
-        body: JSON.stringify(r)
-      }
-      
-      callback(null, response)
-      
-    }).catch(e => {
-      console.log('[error]')
-      console.log(e)
-    })
-    
-  })
+  console.log(payload)
   
+  payload.user = user
+  
+  const db = await mongo.connect(config.mongo_url)
+  
+  const api = require('./api/index.js')
+  
+  const result = await api[payload.action](payload)
+    
+  const response = {
+    statusCode: 200,
+    headers: { "Content-Type": "text/html" },
+    body: JSON.stringify(result)
+  }
+  
+  console.log('async response')
+  console.log(response)
+  
+  return response
 }

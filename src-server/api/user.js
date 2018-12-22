@@ -1,8 +1,22 @@
 const mongo = require('../mongo')
 const db = mongo.getConnection()
 const filter = require('./filter')
+const { Auth } = require('aws-amplify')
 
 const methods = {
+  
+  initializeUser: async ({ user }) => {
+    
+    const user_id = await mongo.getNextId('users')
+    
+    console.log('new user_id: ' + user_id)
+    
+    await Auth.updateUserAttributes(user, { 'custom:user_id': user_id.toString() })
+    
+    await filter.copyDefaultFiltersAllLists({ user_id: user_id })
+    
+    return
+  },
   
   createUser: function ({ username, password }) {
     

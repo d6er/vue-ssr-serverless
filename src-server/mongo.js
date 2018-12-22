@@ -20,16 +20,19 @@ const actions = {
     })
   },
   
-  getConnection: function () {
+  getConnection: () => {
     return db
   },
   
-  getNextId: function (collectionName) {
-    return db.collection('counters').findOneAndUpdate(
+  getNextId: async (collectionName) => {
+    
+    const r = await db.collection('counters').findOneAndUpdate(
       { _id: collectionName },
       { $inc: { seq: 1 } },
       { upsert: true, returnOriginal: false }
     )
+    
+    return r.value.seq
   }
 }
 

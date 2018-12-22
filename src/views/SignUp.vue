@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-vcentered">
     <div class="column is-4 is-offset-4">
-      <div class="box">
+      <div class="box" v-if="state == 'signup'">
         <form v-on:submit.prevent>
           <div class="field">
             <label class="label">Username:</label>
@@ -29,6 +29,10 @@
               <router-link to="/" class="button">Cancel</router-link>
             </p>
           </div>
+        </form>
+      </div>
+      <div class="box" v-if="state == 'confirm'">
+        <form v-on:submit.prevent>
           <div class="field">
             <label class="label">Code:</label>
             <p class="control">
@@ -56,7 +60,8 @@ export default {
       username: '',
       email: '',
       password: '',
-      code: ''
+      code: '',
+      state: 'signup'
     }
   },
   
@@ -70,13 +75,8 @@ export default {
         attributes: { email: this.email }
       }).then(user => {
         
+        this.state = 'confirm'
         console.log(user)
-        
-        // todo: copy default filters
-        let payload = {
-          action: 'copyDefaultFilters'
-        }
-        //this.$store.dispatch('callApi', payload)
         
       }).catch(err => {
         
@@ -91,8 +91,12 @@ export default {
         forceAliasCreation: true    
       }).then(data => {
         
-        console.log('[confirmSignUp]')
-        console.log(data)
+        Auth.signIn(this.username, this.password).then(user => {
+          let payload = {
+            action: 'initializeUser'
+          }
+          this.$store.dispatch('callApi', payload)
+        })
         
       }).catch(err => {
         console.log(err)

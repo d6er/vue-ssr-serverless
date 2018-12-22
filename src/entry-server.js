@@ -27,13 +27,13 @@ export default context => {
       
       return new Promise((resolve, reject) => {
 
-        Auth.currentAuthenticatedUser().then(user => {
+        Auth.currentUserInfo().then(user => {
           
           store.state.user = user
           
           // fetch filter data and set to store (for redirect from / path)
           let query = {
-            user_id: store.state.user.username
+            user_id: parseInt(user.attributes['custom:user_id'])
           }
           // todo: exclude user_id from result
           db.collection('filters').find(query).toArray().then(filters => {
