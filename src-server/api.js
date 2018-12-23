@@ -21,8 +21,5 @@ module.exports.index = async (event, context) => {
     body: JSON.stringify(result)
   }
   
-  console.log('async response')
-  console.log(response)
-  
   return response
 }

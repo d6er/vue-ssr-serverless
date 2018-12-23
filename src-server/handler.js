@@ -23,12 +23,10 @@ module.exports.index = (event, context, callback) => {
   
   const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
   
-  console.dir(event)
-  
   const appContext = {
     url: event.path,
     cookies: cookies,
-    title: event.headers.Host,
+    title: event.headers.Host
   }
   
   renderer.renderToString(appContext, (err, html) => {
