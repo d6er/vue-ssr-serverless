@@ -3,11 +3,6 @@ import * as Cookies from 'js-cookie';
 export default class CustomStorage {
 
   constructor(data) {
-    
-    console.log('[CustomStorage constructor]1')
-    console.log(data)
-    console.log('[CustomStorage constructor]2')
-    
     Object.keys(data).forEach(key => {
       this[key] = data[key]
     })
@@ -19,7 +14,6 @@ export default class CustomStorage {
   }
 
   getItem(key) {
-    console.log('getItem: ' + key + ' = ' + this[key])
     return this[key]
   }
 

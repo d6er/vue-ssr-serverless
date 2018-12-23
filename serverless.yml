@@ -21,15 +21,15 @@ functions:
           method: POST
           path: /api
 
-  auth:
-    handler: src-server/auth.index
+  auth-google:
+    handler: src-server/auth/google.index
     events:
       - http:
           method: GET
-          path: /auth
+          path: /auth/google
 
   oauthcallback:
-    handler: src-server/auth.oauthcallback
+    handler: src-server/auth/google.callback
     events:
       - http:
           method: GET

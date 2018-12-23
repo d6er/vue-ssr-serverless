@@ -1,14 +1,14 @@
 {
 	"providers": {
 		"awscloudformation": {
-			"AuthRoleName": "vuessrserverless-20181212221317-authRole",
-			"UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181212221317-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181212221317-authRole",
+			"AuthRoleName": "vuessrserverless-20181223205029-authRole",
+			"UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181223205029-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20181223205029-authRole",
 			"Region": "us-east-1",
-			"DeploymentBucketName": "vuessrserverless-20181212221317-deployment",
-			"UnauthRoleName": "vuessrserverless-20181212221317-unauthRole",
-			"StackName": "vuessrserverless-20181212221317",
-			"StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20181212221317/b13c1730-fe0f-11e8-a64a-0aab6c3cae14"
+			"DeploymentBucketName": "vuessrserverless-20181223205029-deployment",
+			"UnauthRoleName": "vuessrserverless-20181223205029-unauthRole",
+			"StackName": "vuessrserverless-20181223205029",
+			"StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20181223205029/f2a039d0-06a8-11e9-9439-0a583df6bf38"
 		}
 	},
 	"auth": {
@@ -16,16 +16,16 @@
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181212221317-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
+				"s3TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181223205029-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
 				"logicalId": "authvuessrsls"
 			},
-			"lastPushTimeStamp": "2018-12-12T13:21:51.482Z",
+			"lastPushTimeStamp": "2018-12-23T11:54:18.538Z",
 			"output": {
-				"AppClientSecret": "e1kj6j7kktp3llu9km58o0cf07tv7kueq4scsfraia8i183v8vi",
-				"UserPoolId": "us-east-1_KiO5PaPE4",
-				"AppClientIDWeb": "23qn2418u8njs80n99cs52a9qs",
-				"AppClientID": "6vheochnq7u18kp6ifkjplu87b",
-				"IdentityPoolId": "us-east-1:9ef0473c-c077-4ef2-bd7c-4b5585ef7d4a",
+				"AppClientSecret": "1o8204jjnapkbegdltt735oe5b6l4goma8hu63junvv81a4q3mke",
+				"UserPoolId": "us-east-1_CzlKFFp9m",
+				"AppClientIDWeb": "77mgsvjao47d62gsljuu4mpvc4",
+				"AppClientID": "3ct0bthron70qifhv8sniappvg",
+				"IdentityPoolId": "us-east-1:f4358e12-2229-4200-b8da-156211cd81bd",
 				"IdentityPoolName": "vuessrsls_pool__master",
 				"UserPoolName": "vuessrsls_userpool"
 			},
