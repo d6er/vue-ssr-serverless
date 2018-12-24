@@ -1,9 +1,12 @@
 'use strict'
 
+require = require("esm")(module/*, options*/)
+
 const { google } = require('googleapis');
 const config = require('../../config/server')
 const apiAccount = require('../api/account')
 const util = require('util')
+const amplifyAuth = require('./amplify-auth').default
 
 const oauth2Client = new google.auth.OAuth2(
   config.GOOGLE_CLIENT_ID,
@@ -22,19 +25,18 @@ const url = oauth2Client.generateAuthUrl({
   scope: scopes
 })
 
-module.exports.index = (event, context, callback) => {
+module.exports.index = async (event) => {
   const response = {
     statusCode: 301,
     headers: { Location: url }
   }
-  callback(null, response)
+  return response
 }
 
 module.exports.callback = async (event) => {
   
-  const {tokens} = await oauth2Client.getToken(event.queryStringParameters.code)
+  const { tokens } = await oauth2Client.getToken(event.queryStringParameters.code)
   
-  //await apiAccount.addAccount(req.user._id, tokens)
   oauth2Client.setCredentials(tokens)
   
   const gmail = google.gmail({
@@ -42,27 +44,16 @@ module.exports.callback = async (event) => {
     auth: oauth2Client
   })
   
-  const res = await util.promisify(gmail.users.getProfile)({ userId: 'me' })
+  const profile = await util.promisify(gmail.users.getProfile)({ userId: 'me' })
   
-  console.dir(res.data)
+  const user_id = await amplifyAuth(event)
   
   const account = {
-    _id: 0,
-    user_id: 0,
-    email: '',
+    profile: profile.data,
     tokens: tokens
   }
   
-  gmail.users.messages.list({
-    userId: 'me',
-    maxResults: 2
-  }, (err, res) => {
-    if (err) {
-      console.log('ERR')
-    } else {
-      console.dir(res.data)
-    }
-  })
+  await apiAccount.addAccount(user_id, account)
   
   const response = {
     statusCode: 200,

@@ -4,11 +4,19 @@ const db = mongo.getConnection()
 const methods = {
   
   addAccount: (user_id, account) => {
-    return db.collection('accounts').updateOne({ user_id: user_id,
-                                                 provider: account.provider,
-                                                 id: account.id },
-                                               { $set: account },
-                                               { upsert: true })
+    return db.collection('accounts').updateOne(
+      {
+        user_id: user_id,
+        'profile.emailAddress': profile.emailAddress,
+        id: account.id
+      },
+      {
+        $set: account
+      },
+      {
+        upsert: true
+      }
+    )
   },
   
   fetchAccounts: ({ user_id }) => {
