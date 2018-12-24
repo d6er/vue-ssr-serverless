@@ -7,8 +7,7 @@ const methods = {
     return db.collection('accounts').updateOne(
       {
         user_id: user_id,
-        'profile.emailAddress': profile.emailAddress,
-        id: account.id
+        'profile.emailAddress': account.profile.emailAddress
       },
       {
         $set: account

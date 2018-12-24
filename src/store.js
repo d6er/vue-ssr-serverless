@@ -107,6 +107,20 @@ export function createStore () {
     
     mutations: {
       
+      // User
+      delteUser (state, payload) {
+        Vue.$delete(state, 'user')
+      },
+      
+      // Filter
+      setFilterForm (state, filterForm) {
+        state.filterForm = filterForm
+      },
+      
+      setCurrentList(state, list) {
+        state.currentList = list
+      },
+      
       // Item
       // todo: use constant for function names.
       // https://vuex.vuejs.org/en/mutations.html
@@ -120,6 +134,14 @@ export function createStore () {
         payload.result.items.forEach((item, index) => {
           Vue.set(list.items, index, item)
         })
+      },
+      
+      clearItems (state) {
+        state.items = []
+      },
+      
+      setAccounts (state, payload) {
+        state.accounts = payload.result
       },
       
       setItem (state, { id, item }) {

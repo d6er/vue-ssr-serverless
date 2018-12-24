@@ -4,6 +4,7 @@ require = require("esm")(module/*, options*/)
 
 const cookie = require('cookie')
 const api2 = require('./api2').default
+const mongo = require('./mongo')
 
 module.exports.index = async (event, context) => {
 

@@ -141,7 +141,7 @@ export default {
       filter: filter,
       page: page
     }
-    //return store.dispatch('callApi', apiData)
+    return store.dispatch('callApi', apiData)
   },
   
   // https://router.vuejs.org/en/advanced/data-fetching.html

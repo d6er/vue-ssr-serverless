@@ -6,6 +6,7 @@ let db
 
 const actions = {
   
+  // https://www.mongodb.com/blog/post/optimizing-aws-lambda-performance-with-mongodb-atlas-and-nodejs
   connect: function (url) {
     return new Promise((resolve, reject) => {
       if (db) {

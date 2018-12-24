@@ -4,9 +4,9 @@ require = require("esm")(module/*, options*/)
 
 const { google } = require('googleapis');
 const config = require('../../config/server')
-const apiAccount = require('../api/account')
 const util = require('util')
 const amplifyAuth = require('./amplify-auth').default
+const mongo = require('../mongo')
 
 const oauth2Client = new google.auth.OAuth2(
   config.GOOGLE_CLIENT_ID,
@@ -45,8 +45,12 @@ module.exports.callback = async (event) => {
   })
   
   const profile = await util.promisify(gmail.users.getProfile)({ userId: 'me' })
-  
+    
   const user_id = await amplifyAuth(event)
+  
+  const db = await mongo.connect(config.mongo_url)
+  
+  const apiAccount = require('../api/account')
   
   const account = {
     profile: profile.data,
@@ -56,9 +60,8 @@ module.exports.callback = async (event) => {
   await apiAccount.addAccount(user_id, account)
   
   const response = {
-    statusCode: 200,
-    headers: { "Content-Type": "text/html" },
-    body: 'oauthcallback-done'
+    statusCode: 301,
+    headers: { Location: '/settings' }
   }
   
   return response

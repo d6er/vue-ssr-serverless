@@ -1,6 +1,8 @@
 'use strict'
 
 const fs = require('fs')
+const mongo = require('./mongo')
+const util = require('util')
 
 const { createBundleRenderer } = require('vue-server-renderer')
 
@@ -16,10 +18,9 @@ const renderer = createBundleRenderer(serverBundle, {
   clientManifest
 })
 
-module.exports.index = (event, context, callback) => {
+module.exports.index = async (event, context) => {
   
-  // https://github.com/aws-amplify/amplify-js/issues/1460
-  context.callbackWaitsForEmptyEventLoop = false;
+  context.callbackWaitsForEmptyEventLoop = false
   
   const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
   
@@ -29,28 +30,13 @@ module.exports.index = (event, context, callback) => {
     title: event.headers.Host
   }
   
-  renderer.renderToString(appContext, (err, html) => {
-    
-    if (err) {
-      
-      const response = {
-        statusCode: 500,
-        headers: { "Content-Type": "text/html" },
-        body: err
-      }
-      callback(err, response)
-      
-    } else {
-      
-      const response = {
-        statusCode: 200,
-        headers: { "Content-Type": "text/html" },
-        body: html
-      }
-      callback(null, response)
-      
-    }
-    
-  })
-
+  const html = await util.promisify(renderer.renderToString)(appContext)
+  
+  const response = {
+    statusCode: 200,
+    headers: { "Content-Type": "text/html" },
+    body: html
+  }
+  
+  return response
 }

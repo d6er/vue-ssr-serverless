@@ -2,7 +2,6 @@ import { createApp } from './app'
 import Amplify, { Auth, Hub, Logger } from 'aws-amplify';
 import LocalCookieStorage from '../src-server/LocalCookieStorage'
 
-const { app, router, store } = createApp()
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
@@ -22,6 +21,8 @@ if (window.location.hostname == 'localhost') {
     }
   })
 }
+
+const { app, router, store } = createApp()
 
 // Hub
 const alex = new Logger('Alexander_the_auth_watcher')

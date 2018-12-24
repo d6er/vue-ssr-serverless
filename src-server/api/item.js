@@ -23,11 +23,7 @@ const methods = {
     
     if (list != 'emails') return
     
-    return apiAccount.fetchAccounts({ user_id: user_id }).then(accounts => {
-      
-      return accounts.filter(account => account.provider == 'google')
-      
-    }).then(googleAccounts => {
+    return apiAccount.fetchAccounts({ user_id: user_id }).then(googleAccounts => {
       
       return Promise.all(googleAccounts.map(account => {
         return gmail.syncItems(user_id, account)

@@ -19,11 +19,7 @@ const methods = {
     var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl)
     
     // https://github.com/google/google-api-nodejs-client/#manually-refreshing-access-token
-    oauth2Client.setCredentials({
-      access_token: account.accessToken,
-      refresh_token: account.refreshToken,
-      expiry_date: true
-    });
+    oauth2Client.setCredentials(account.tokens)
     
     return oauth2Client
   },
@@ -33,7 +29,7 @@ const methods = {
     let params = {
       auth: oauth2Client,
       userId: 'me',
-      maxResults: 5
+      maxResults: 100
     }
     return new Promise((resolve, reject) => {
       gmail.users.messages.list(params, function(err, response) {
@@ -78,6 +74,7 @@ const methods = {
     return new Promise((resolve, reject) => {
       gmail.users.history.list(params, (err, response) => {
         if (err) {
+          console.log('[gmail.js history list ERROR]')
           reject(err)
         } else {
           resolve(response)
@@ -88,9 +85,15 @@ const methods = {
   
   getMaxHistoryId: (user_id, list, account) => {
     const coll = list + '.' + user_id
-    return db.collection(coll).findOne({ account: account.emails[0].value },
-                                       { fields: { 'historyId': 1 },
-                                         sort: [ [ 'historyId', 'descending' ] ] })
+    return db.collection(coll).findOne(
+      {
+        account: account.profile.emailAddress
+      },
+      {
+        fields: { 'historyId': 1 },
+        sort: [ [ 'historyId', 'descending' ] ]
+      }
+    )
   },
   
   convertMessage: message => {
@@ -127,7 +130,7 @@ const methods = {
   syncItems: (user_id, account) => {
     let oauth2Client = methods.getOAuth2Client(account)
     return methods.getMaxHistoryId(user_id, 'emails', account).then(r => {
-      console.log('syncItems: ' + account.emails[0].value)
+      console.log('syncItems: ' + account.profile.emailAddress + ' ' + r.historyId)
       return methods.syncItems2(user_id, account, oauth2Client, r.historyId)
     }).catch(e => {
       return methods.fullSyncItems(user_id, account, oauth2Client)
@@ -152,11 +155,12 @@ const methods = {
   
   fullSyncItems: (user_id, account, oauth2Client) => {
     
-    console.log('fullSyncItems: ' + account.emails[0].value)
+    console.log('fullSyncItems: ' + account.profile.emailAddress)
     
     return methods.messagesList(oauth2Client).then(r => {
+      
       let message_ids = []
-      r.messages.map(message => {
+      r.data.messages.map(message => {
         message_ids.push(message.id)
       })
       return message_ids
@@ -173,8 +177,8 @@ const methods = {
             
             return methods.messagesGet(oauth2Client, message_id).then(responseMessage => {
               
-              let converted = methods.convertMessage(responseMessage)
-              converted.account = account.emails[0].value
+              let converted = methods.convertMessage(responseMessage.data)
+              converted.account = account.profile.emailAddress
               
               let coll = db.collection('emails.' + user_id)
               return coll.updateOne({ _id: converted._id },
@@ -206,7 +210,7 @@ const methods = {
         return methods.messagesGet(oauth2Client, m.message.id).then(responseMessage => {
           
           let converted = methods.convertMessage(responseMessage)
-          converted.account = account.emails[0].value
+          converted.account = account.profile.emailAddress
           
           return coll.updateOne({ _id: converted._id },
                                 { $set: converted },

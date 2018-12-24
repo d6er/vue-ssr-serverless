@@ -18,7 +18,6 @@
             </div>
             <div class="field-body">
               <div class="field">
-                {{ username }}
               </div>
             </div>
           </div>
@@ -47,13 +46,12 @@
                 <tbody>
                   <tr v-for="account in $store.state.accounts">
                     <td class="is-capitalized">
-                      {{ account.provider }}
+                      {{ account.tokens.refresh_token ? 'yes' : 'no' }}
                     </td>
                     <td>
-                      {{ account.displayName }}
                     </td>
-                    <td v-if="account.emails">
-                      {{ account.emails[0].value }}
+                    <td>
+                      {{ account.profile.emailAddress }}
                     </td>
                     <td>
                       <button @click="deleteAccount" class="button is-small">
@@ -90,9 +88,6 @@
 export default {
   
   computed: {
-    username () {
-      return this.$store.state.user.username
-    },
     timezone () {
       //return moment.tz.guess()
     }
