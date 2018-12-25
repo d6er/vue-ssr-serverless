@@ -142,13 +142,13 @@ const methods = {
   syncItems2: (user_id, account, oauth2Client, historyId, pageToken) => {
     
     return methods.historyList(oauth2Client, historyId, pageToken).then(r => {
-      if (!r.hasOwnProperty('history')) return
+      if (!r.data.hasOwnProperty('history')) return
       
-      return Promise.all(r.history.map(historyItem => {
+      return Promise.all(r.data.history.map(historyItem => {
         return methods.processHistory(user_id, account, oauth2Client, historyItem)
       })).then(processResult => {
-        if (!r.hasOwnProperty('nextPageToken')) return
-        return methods.syncItems2(user_id, account, oauth2Client, historyId, r.nextPageToken)
+        if (!r.data.hasOwnProperty('nextPageToken')) return
+        return methods.syncItems2(user_id, account, oauth2Client, historyId, r.data.nextPageToken)
       })
     })
   },
