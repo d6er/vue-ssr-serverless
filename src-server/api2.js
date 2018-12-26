@@ -18,14 +18,14 @@ async function callAPI (cookies, payload) {
     }
   })
   
-  const user = await Auth.currentAuthenticatedUser()
-  payload.user = user
-  
+  console.log('1,2 userinfo')
   const userInfo = await Auth.currentUserInfo()
-  payload.user_id = parseInt(user.attributes['custom:user_id'])
+  payload.user_id = parseInt(userInfo.attributes['custom:user_id'])
   
+  console.log('3 db conn')
   const db = await mongo.connect(config.mongo_url)
   
+  console.log('4 api call')
   const api = require('./api/index.js')
   
   return api[payload.action](payload)

@@ -15,6 +15,8 @@ module.exports.index = async (event, context) => {
   const payload = JSON.parse(event.body)
   
   const result = await api2(cookies, payload)
+
+  console.log('5 result')
     
   const response = {
     statusCode: 200,

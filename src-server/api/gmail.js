@@ -133,6 +133,7 @@ const methods = {
       console.log('syncItems: ' + account.profile.emailAddress + ' ' + r.historyId)
       return methods.syncItems2(user_id, account, oauth2Client, r.historyId)
     }).catch(e => {
+      console.dir(e)
       return methods.fullSyncItems(user_id, account, oauth2Client)
     }).catch(e => {
       console.dir(e)
@@ -209,7 +210,7 @@ const methods = {
       return Promise.all(historyItem.messagesAdded.map(m => {
         return methods.messagesGet(oauth2Client, m.message.id).then(responseMessage => {
           
-          let converted = methods.convertMessage(responseMessage)
+          let converted = methods.convertMessage(responseMessage.data)
           converted.account = account.profile.emailAddress
           
           return coll.updateOne({ _id: converted._id },
