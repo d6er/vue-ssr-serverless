@@ -15,7 +15,7 @@ functions:
           method: GET
           path: /
   api:
-    handler: src-server/api.index
+    handler: src-server/handler.api
     events:
       - http:
           method: POST
