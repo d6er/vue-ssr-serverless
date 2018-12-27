@@ -41,9 +41,6 @@ export function createStore () {
         
         return api.call(data).then(result => {
           
-          console.log('[store.js callApi() result]')
-          console.dir(result.data)
-          
           let payload = {
             result: result.data,
             callData: data
