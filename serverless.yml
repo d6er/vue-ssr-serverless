@@ -39,6 +39,7 @@ package:
   exclude:
     - node_modules/.cache/**
     - node_modules/aws-sdk/**
+    - node_modules/@aws-amplify/core/node_modules/aws-sdk/**
     - build/**
     - .git/**
 
