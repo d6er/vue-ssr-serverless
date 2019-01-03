@@ -40,7 +40,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "npm run build && sls client deploy --no-confirm && sls deploy",
-    "build": "npm run build:server && npm run build:client",
+    "build": "npm run build:css && npm run build:server && npm run build:client",
     "build:client": "npx webpack --config build/webpack.client.config.js",
     "build:server": "npx webpack --config build/webpack.server.config.js",
     "build:css": "node-sass --omit-source-map-url sass/bulma.scss dist/bulma.css",

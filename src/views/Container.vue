@@ -69,6 +69,7 @@ export default {
     
     signOut () {
       Auth.signOut().then(data => {
+        this.$store.commit('deleteUser')
         this.$router.push('/')
       }).catch(err => {
         console.log(err)

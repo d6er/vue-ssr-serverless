@@ -5,11 +5,13 @@ const { Auth } = require('aws-amplify')
 
 const methods = {
   
-  initializeUser: async ({ user }) => {
+  initializeUser: async () => {
     
     const user_id = await mongo.getNextId('users')
     
     console.log('new user_id: ' + user_id)
+    
+    const user = await Auth.currentAuthenticatedUser()
     
     await Auth.updateUserAttributes(user, { 'custom:user_id': user_id.toString() })
     

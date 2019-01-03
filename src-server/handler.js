@@ -13,6 +13,7 @@ let coldStart = true
 module.exports.index = async (event, context) => {
   
   console.log('[handler.js] ' + event.path + ' coldStart:' + coldStart)
+  
   coldStart = false
   
   context.callbackWaitsForEmptyEventLoop = false

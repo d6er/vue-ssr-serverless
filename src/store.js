@@ -105,7 +105,7 @@ export function createStore () {
     mutations: {
       
       // User
-      delteUser (state, payload) {
+      deleteUser (state) {
         Vue.$delete(state, 'user')
       },
       
