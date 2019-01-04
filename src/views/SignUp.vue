@@ -84,12 +84,14 @@ export default {
       Auth.confirmSignUp(this.username, this.code, {
         forceAliasCreation: true    
       }).then(data => {
-        Auth.signIn(this.username, this.password).then(user => {
-          let payload = {
-            action: 'initializeUser'
-          }
-          this.$store.dispatch('callApi', payload)
-        })
+        return Auth.signIn(this.username, this.password)
+      }).then(user => {
+        let payload = {
+          action: 'initializeUser'
+        }
+        return this.$store.dispatch('callApi', payload)
+      }).then(() => {
+        this.$router.go('/')
       }).catch(err => {
         console.log(err)
       })

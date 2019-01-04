@@ -34,7 +34,6 @@ const methods = {
     return new Promise((resolve, reject) => {
       gmail.users.messages.list(params, function(err, response) {
         if (err) {
-          console.dir(err)
           reject(err)
         } else {
           resolve(response)
@@ -197,7 +196,8 @@ const methods = {
       }))
       
     }).catch(e => {
-      console.dir(e)
+      console.log(e)
+      console.log('fullSyncItems: ERROR ' + account.profile.emailAddress)
     })
   },
   

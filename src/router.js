@@ -9,8 +9,7 @@ export function createRouter (store) {
   
   // https://medium.com/@bradfmd/vue-js-setting-up-auth0-6eb26cbbc48a
   async function requireAuth (to, from, next) {
-    const user = await Auth.currentUserInfo()
-    if (user) {
+    if (store.state.user) {
       next()
     } else {
       next({
@@ -21,8 +20,7 @@ export function createRouter (store) {
   }
   
   async function checkAuth (to, from, next) {
-    const user = await Auth.currentUserInfo()
-    if (user) {
+    if (store.state.user) {
       let path = '/' + store.state.lists[0].name + '/' + store.state.lists[0].filters[0].name
       next(path)
     } else {

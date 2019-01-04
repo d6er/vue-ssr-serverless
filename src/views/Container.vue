@@ -39,7 +39,7 @@
               </router-link>
             </li>
             <li>
-              <a @click="signOut">
+              <a @click="signOut" href="/">
                 <span class="icon">
                   <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                 </span>
@@ -69,8 +69,7 @@ export default {
     
     signOut () {
       Auth.signOut().then(data => {
-        this.$store.commit('deleteUser')
-        this.$router.push('/')
+        //this.$router.go('/')
       }).catch(err => {
         console.log(err)
       })

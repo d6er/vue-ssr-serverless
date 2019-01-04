@@ -144,8 +144,22 @@ export default {
     return store.dispatch('callApi', apiData)
   },
   
+  beforeRouteEnter (to, from, next) {
+    console.log('List.vue beforeRouteEnter')
+    let apiData = {
+      action: 'fetchItems',
+      list: to.params.list,
+      filter: to.params.filter,
+      page: to.params.page
+    }
+    next(vm => {
+      vm.$store.dispatch('callApi', apiData).then(r => {})
+    })
+  },
+  
   // https://router.vuejs.org/en/advanced/data-fetching.html
   beforeRouteUpdate (to, from, next) {
+    console.log('List.vue beforeRouteUpdate')
     let apiData = {
       action: 'fetchItems',
       list: to.params.list,

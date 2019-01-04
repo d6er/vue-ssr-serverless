@@ -11,7 +11,7 @@ const mongo = require('../mongo')
 const oauth2Client = new google.auth.OAuth2(
   config.GOOGLE_CLIENT_ID,
   config.GOOGLE_CLIENT_SECRET,
-  "http://localhost:3000/auth/google/callback"
+  config.GOOGLE_CALLBACK_URL
 )
 
 const scopes = [
@@ -26,7 +26,7 @@ const url = oauth2Client.generateAuthUrl({
   scope: scopes
 })
 
-module.exports.index = async (event) => {
+module.exports.index = (event) => {
   const response = {
     statusCode: 301,
     headers: { Location: url }

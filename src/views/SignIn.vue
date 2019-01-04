@@ -44,7 +44,7 @@ export default {
   methods: {
     signIn () {
       Auth.signIn(this.username, this.password).then(user => {
-        this.$router.push('/')
+        this.$router.go('/')
       }).catch(err => {
         console.log(err)
       })

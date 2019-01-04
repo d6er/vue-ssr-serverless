@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 export default {
-  call (payload) {
-    return axios.post('/api', payload)
+  async call (payload) {
+    const result = await axios.post('/api', payload)
+    return result.data
   }
 }

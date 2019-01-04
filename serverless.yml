@@ -18,13 +18,6 @@ functions:
           method: POST
           path: /api
 
-  auth-google:
-    handler: src-server/auth/google.index
-    events:
-      - http:
-          method: GET
-          path: /auth/google
-
   oauthcallback:
     handler: src-server/auth/google.callback
     events:

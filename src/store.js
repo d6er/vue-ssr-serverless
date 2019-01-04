@@ -42,7 +42,7 @@ export function createStore () {
         return api.call(data).then(result => {
           
           let payload = {
-            result: result.data,
+            result: result,
             callData: data
           }
           
@@ -106,7 +106,7 @@ export function createStore () {
       
       // User
       deleteUser (state) {
-        Vue.$delete(state, 'user')
+        Vue.delete(state, 'user')
       },
       
       // Filter
@@ -141,8 +141,15 @@ export function createStore () {
         state.accounts = payload.result
       },
       
-      setItem (state, { id, item }) {
-        Vue.set(state.items, id, item)
+      setItem (state, payload) {
+        state.paging = payload.result.paging
+        let list = state.lists.find(l => l.name == payload.callData.list)
+        Vue.set(list, 'items', [ payload.result.item ])
+      },
+      
+      setFilters (state, payload) {
+        let list = state.lists.find(l => l.name == payload.callData.listName)
+        list.filters = payload.result
       },
       
       setFilterTree (state, payload) {
