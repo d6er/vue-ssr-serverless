@@ -1,15 +1,13 @@
 'use strict'
 
-//require('aws-sdk/clients/apigatewaymanagementapi')
-
-require = require("esm")(module/*, options*/)
+const require_esm = require("esm")(module)
 
 const AWS = require('aws-sdk')
 const mongo = require('./mongo')
 const util = require('util')
 const ssr = require('./ssr')
-const api = require('./api').default
-const ws = require('./websocket').default
+const api = require_esm('./api').default
+const ws = require_esm('./websocket').default
 const cookie = require('cookie')
 const google = require('./auth/google')
 //const ws = require('ws')
