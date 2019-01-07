@@ -8,6 +8,7 @@ const ssr = require('./ssr')
 const api = require('./api').default
 const cookie = require('cookie')
 const google = require('./auth/google')
+//const ws = require('ws')
 
 let coldStart = true
 
@@ -36,6 +37,12 @@ module.exports.index = async (event, context) => {
   } else if (event.path == '/auth/google') {
     
     return google.index()
+    
+  } else if (event.headers.hasOwnProperty('Sec-WebSocket-Key')) {
+    
+    return {
+      statusCode: 200
+    }
     
   } else {
     

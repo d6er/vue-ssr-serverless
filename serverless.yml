@@ -3,6 +3,7 @@ service: vue-ssr-serverless
 provider:
   name: aws
   runtime: nodejs8.10
+  websocketApiRouteSelectionExpression: $request.body.action
 
 functions:
   index:
@@ -24,6 +25,26 @@ functions:
       - http:
           method: GET
           path: /auth/google/callback
+
+  connectionHandler:
+    handler: src-server/handler.index
+    events:
+      - websocket:
+          routeKey: $connect
+      - websocket:
+          routeKey: $disconnect
+
+  defaultHandler:
+    handler: src-server/handler.index
+    events:
+      - websocket:
+          routeKey: $default
+
+  actionHandler:
+    handler: src-server/handler.index
+    events:
+      - websocket:
+          routeKey: myAction
 
 package:
   exclude:
@@ -80,6 +101,7 @@ plugins:
   - serverless-offline
   - serverless-finch
   - serverless-domain-manager
+  - serverless-websockets-plugin
 
 custom:
   serverless-offline:

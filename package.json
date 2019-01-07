@@ -12,11 +12,13 @@
     "moment": "^2.23.0",
     "mongodb": "^3.1.10",
     "node-fetch": "^2.3.0",
+    "serverless-websockets-plugin": "^1.0.0",
     "vue": "^2.5.21",
     "vue-router": "^3.0.2",
     "vue-server-renderer": "^2.5.21",
     "vuex": "^3.0.1",
-    "vuex-router-sync": "^5.0.0"
+    "vuex-router-sync": "^5.0.0",
+    "ws": "^6.1.2"
   },
   "devDependencies": {
     "babel-loader": "^8.0.4",
