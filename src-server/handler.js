@@ -1,16 +1,21 @@
 'use strict'
 
+//require('aws-sdk/clients/apigatewaymanagementapi')
+
 require = require("esm")(module/*, options*/)
 
+const AWS = require('aws-sdk')
 const mongo = require('./mongo')
 const util = require('util')
 const ssr = require('./ssr')
 const api = require('./api').default
+const ws = require('./websocket').default
 const cookie = require('cookie')
 const google = require('./auth/google')
 //const ws = require('ws')
 
 let coldStart = true
+let connectionID = null
 
 module.exports.index = async (event, context) => {
   
@@ -18,9 +23,15 @@ module.exports.index = async (event, context) => {
   
   console.log('[handler.js] ' + event.path + ' coldStart:' + coldStart)
   
+  if (!event.path) {
+    console.log('[handler.js no event.path]A')
+    console.log(event)
+    console.log('[handler.js no event.path]B')
+  }
+  
   coldStart = false
   
-  const cookies = event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
+  const cookies = event.hasOwnProperty('headers') && event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
 
   const response = {
     statusCode: 200,
@@ -38,11 +49,35 @@ module.exports.index = async (event, context) => {
     
     return google.index()
     
-  } else if (event.headers.hasOwnProperty('Sec-WebSocket-Key')) {
+  } else if (event.requestContext.eventType == 'CONNECT') {
+
+    connectionID = event.requestContext.connectionId
     
     return {
       statusCode: 200
     }
+
+  } else if (event.requestContext.eventType == 'MESSAGE') {
+    
+    const payload = JSON.parse(event.body)
+    const result = await ws(event, payload.data)
+    
+    console.log('[websocket result]')
+    console.log(result)
+    console.log('[AWS]')
+    console.log(AWS)
+    
+    let wsClient = new AWS.ApiGatewayManagementApi({
+      apiVersion: "2018-11-29",
+      endpoint: 'https://kbm6sisjkh.execute-api.us-east-1.amazonaws.com/dev/'
+    })
+    
+    wsClient.postToConnection({
+      ConnectionID: connectionID,
+      Data: JSON.stringify(result)
+    })
+    
+    return
     
   } else {
     

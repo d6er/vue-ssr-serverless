@@ -26,31 +26,23 @@ functions:
           method: GET
           path: /auth/google/callback
 
-  connectionHandler:
+  websocketHandler:
     handler: src-server/handler.index
     events:
       - websocket:
           routeKey: $connect
       - websocket:
           routeKey: $disconnect
-
-  defaultHandler:
-    handler: src-server/handler.index
-    events:
       - websocket:
           routeKey: $default
-
-  actionHandler:
-    handler: src-server/handler.index
-    events:
       - websocket:
           routeKey: myAction
 
 package:
   exclude:
     - node_modules/.cache/**
-    - node_modules/aws-sdk/**
-    - node_modules/@aws-amplify/core/node_modules/aws-sdk/**
+#    - node_modules/aws-sdk/**
+#    - node_modules/@aws-amplify/core/node_modules/aws-sdk/**
     - build/**
     - .git/**
     - "*.js.map"

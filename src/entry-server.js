@@ -33,7 +33,7 @@ export default context => {
 
         Auth.currentUserInfo().then(user => {
           
-          store.state.user = user
+          store.state.user = user // todo: remove user attributes from store
           
           // fetch filter data and set to store (for redirect from / path)
           let query = {

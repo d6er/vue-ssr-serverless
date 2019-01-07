@@ -19,7 +19,11 @@ connect()
 // https://stackoverflow.com/questions/3780511/reconnection-of-client-when-server-reboots-in-websocket
 // todo: ping - pong
 function connect () {
-  wsp = new WebSocketPromise(config.websocket_url)
+  
+  console.log('[api-client.js]')
+  console.log(window.location.hostname)
+  
+  wsp = new WebSocketPromise(config.websocket_url[window.location.hostname])
   
   wsp.onopen = () => {
     console.log('WebSocket open.')
