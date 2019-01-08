@@ -62,20 +62,24 @@ module.exports.index = async (event, context) => {
     
     console.log('[websocket result]')
     console.log(result)
-    console.log('[AWS]')
-    console.log(AWS)
+    console.log('connectionID: ' + connectionID)
     
     let wsClient = new AWS.ApiGatewayManagementApi({
-      apiVersion: "2018-11-29",
+      apiVersion: '2018-11-29',
       endpoint: 'https://kbm6sisjkh.execute-api.us-east-1.amazonaws.com/dev/'
     })
     
-    wsClient.postToConnection({
-      ConnectionID: connectionID,
+    await wsClient.postToConnection({
+      ConnectionId: connectionID,
       Data: JSON.stringify(result)
+    }).promise().catch(err => {
+      console.log('[err]')
+      console.log(err)
     })
     
-    return
+    return {
+      statusCode: 200
+    }
     
   } else {
     
@@ -83,5 +87,7 @@ module.exports.index = async (event, context) => {
     
   }
   
-  return response
+  if (response.hasOwnProperty('body')) {
+    return response
+  }
 }
