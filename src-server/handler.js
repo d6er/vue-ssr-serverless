@@ -59,10 +59,12 @@ module.exports.index = async (event, context) => {
     
     const payload = JSON.parse(event.body)
     const result = await ws(event, payload.data)
-    
+    const data = {
+      job_id: payload.job_id,
+      resolve: result
+    }
     console.log('[websocket result]')
-    console.log(result)
-    console.log('connectionID: ' + connectionID)
+    console.log(data)
     
     let wsClient = new AWS.ApiGatewayManagementApi({
       apiVersion: '2018-11-29',
@@ -70,8 +72,8 @@ module.exports.index = async (event, context) => {
     })
     
     await wsClient.postToConnection({
-      ConnectionId: connectionID,
-      Data: JSON.stringify(result)
+      ConnectionId: event.requestContext.connectionId,
+      Data: JSON.stringify(data)
     }).promise().catch(err => {
       console.log('[err]')
       console.log(err)
