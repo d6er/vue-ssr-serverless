@@ -10,10 +10,8 @@ const api = require_esm('./api').default
 const ws = require_esm('./websocket').default
 const cookie = require('cookie')
 const google = require('./auth/google')
-//const ws = require('ws')
 
 let coldStart = true
-let connectionID = null
 
 module.exports.index = async (event, context) => {
   
@@ -47,15 +45,13 @@ module.exports.index = async (event, context) => {
     
     return google.index()
     
-  } else if (event.requestContext.eventType == 'CONNECT') {
+  } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
 
-    connectionID = event.requestContext.connectionId
-    
     return {
       statusCode: 200
     }
 
-  } else if (event.requestContext.eventType == 'MESSAGE') {
+  } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'MESSAGE') {
     
     const payload = JSON.parse(event.body)
     const result = await ws(event, payload.data)
