@@ -47,6 +47,7 @@
               </a>
             </li>
           </ul>
+          <hr/>
         </aside>
       </div>
       <div class="column">

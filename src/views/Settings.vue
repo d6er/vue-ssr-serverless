@@ -18,6 +18,7 @@
             </div>
             <div class="field-body">
               <div class="field">
+                {{ username }}
               </div>
             </div>
           </div>
@@ -27,7 +28,11 @@
             </div>
             <div class="field-body">
               <div class="field">
-                {{ timezone }}
+                <div class="select">
+                  <select name="timezone">
+                    <option v-for="name in timezones">{{ name }}</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -85,11 +90,19 @@
 </template>
 
 <script>
+import moment from 'moment-timezone'
+
 export default {
   
   computed: {
+    username () {
+      return this.$store.state.user.username
+    },
     timezone () {
-      //return moment.tz.guess()
+      return moment.tz.guess()
+    },
+    timezones () {
+      return moment.tz.names()
     }
   },
   
