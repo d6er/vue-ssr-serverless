@@ -34,7 +34,19 @@ module.exports.index = async (event, context) => {
     headers: { "Content-Type": "text/html" },
   }
   
-  if (event.path == '/api') {
+  if (process.env.IS_OFFLINE
+      && event.hasOwnProperty('headers')
+      && event.headers.hasOwnProperty('sec-websocket-key')) {
+    
+    const payload = JSON.parse(event.body)
+    const result = await ws(event, payload.data)
+    const data = {
+      job_id: payload.job_id,
+      resolve: result
+    }
+    response.body = JSON.stringify(data)
+    
+  } else if (event.path == '/api') {
     
     const payload = JSON.parse(event.body)
     const result = await api(cookies, payload)
