@@ -15,16 +15,19 @@ let coldStart = true
 
 module.exports.index = async (event, context) => {
   
-  context.callbackWaitsForEmptyEventLoop = false
-  
-  console.log('[handler.js] ' + event.path + ' coldStart:' + coldStart)
-  
+  // Logging
+  if (coldStart) {
+    console.log('[handler.js] COLD START path: ' + event.path)
+  }
+  if (event.hasOwnProperty('requestContext')) {
+    console.log('[handler.js] eventType: ' + event.requestContext.eventType)
+  }
   if (!event.path) {
-    console.log('[handler.js no event.path]A')
+    console.log('[handler.js no event.path]')
     console.log(event)
-    console.log('[handler.js no event.path]B')
   }
   
+  context.callbackWaitsForEmptyEventLoop = false
   coldStart = false
   
   const cookies = event.hasOwnProperty('headers') && event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''

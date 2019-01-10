@@ -32,7 +32,7 @@ functions:
           method: GET
           path: /auth/google/callback
 
-  websocketHandler:
+  websocket:
     handler: src-server/handler.index
     events:
       - websocket:

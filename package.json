@@ -42,13 +42,15 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm run build && sls client deploy --no-confirm && sls deploy",
-    "build": "npm run build:css && npm run build:server && npm run build:client",
+    "deploy": "npm run build && npm run deploy:client && serverless deploy",
+    "deploy:client": "serverless client deploy --no-confirm",
+    "deploy:func": "npm run build && npm run deploy:client && serverless deploy function -f index",
+    "build": "npm run build:server && npm run build:client",
     "build:client": "npx webpack --config build/webpack.client.config.js",
     "build:server": "npx webpack --config build/webpack.server.config.js",
     "build:css": "node-sass --omit-source-map-url sass/bulma.scss dist/bulma.css",
-    "offline": "serverless offline start --dontPrintOutput"
+    "offline": "serverless offline start --dontPrintOutput",
+    "logs": "serverless logs -f index -t"
   },
   "repository": {
     "type": "git",
