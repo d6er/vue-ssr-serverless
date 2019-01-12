@@ -132,7 +132,7 @@ const methods = {
       console.log('syncItems: ' + account.profile.emailAddress + ' ' + r.historyId)
       return methods.syncItems2(user_id, account, oauth2Client, r.historyId)
     }).catch(e => {
-      console.dir(e)
+      //console.dir(e)
       return methods.fullSyncItems(user_id, account, oauth2Client)
     }).catch(e => {
       console.dir(e)
@@ -196,7 +196,7 @@ const methods = {
       }))
       
     }).catch(e => {
-      console.log(e)
+      //console.log(e)
       console.log('fullSyncItems: ERROR ' + account.profile.emailAddress)
     })
   },

@@ -5,7 +5,7 @@ const apiUser = require('./user')
 const apiAccount = require('./account')
 const gmail = require('./gmail')
 const hackerNews = require('./hacker-news')
-//const wsPool = require('../websocket-pool')
+const wsPool = require('../websocket-pool')
 
 const mongo = require('../mongo')
 const db = mongo.getConnection()
@@ -15,7 +15,7 @@ const methods = {
   // todo: change method name to syncItems
   refreshList: ({ user_id, list, filter, page }) => {
     
-    //wsPool.send(user_id, 'Refreshing...')
+    wsPool.send(user_id, 'Refreshing...')
     
     if (list == 'hacker-news') {
       return hackerNews.syncTopStories(user_id)
@@ -30,7 +30,7 @@ const methods = {
       }))
       
     }).then(savedResults => {
-      //wsPool.send(user_id, 'Refreshed.')
+      wsPool.send(user_id, 'Refreshed.')
       return methods.fetchItems({ user_id: user_id,
                                   list: list,
                                   filter: filter,

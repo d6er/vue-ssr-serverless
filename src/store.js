@@ -37,6 +37,13 @@ export function createStore () {
     strict: process.env.NODE_ENV !== 'production',
     
     actions: {
+      
+      setApiListener ({ commit, state }) {
+        api.setJob(0, message => {
+          commit('setNotification', message)
+        })
+      },
+      
       callApi ({ commit, state }, data) {
         
         // todo: remove this line and auth on server side by cookie

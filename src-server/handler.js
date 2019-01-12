@@ -7,7 +7,7 @@ const mongo = require('./mongo')
 const util = require('util')
 const ssr = require('./ssr')
 const api = require_esm('./api').default
-const ws = require_esm('./websocket').default
+const websocket = require_esm('./websocket').default
 const cookie = require('cookie')
 const google = require('./auth/google')
 
@@ -24,8 +24,9 @@ module.exports.index = async (event, context) => {
   }
   if (!event.path) {
     console.log('[handler.js no event.path]')
-    console.log(event)
+    //console.log(event)
   }
+  console.log('event.isOffline: ' + event.isOffline)
   
   context.callbackWaitsForEmptyEventLoop = false
   coldStart = false
@@ -37,17 +38,26 @@ module.exports.index = async (event, context) => {
     headers: { "Content-Type": "text/html" },
   }
   
+  if (event.isOffline) {
+    if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
+      await websocket(event, cookies)
+      return { statusCode: 200 }
+    }
+  }
+  
   if (process.env.IS_OFFLINE
       && event.hasOwnProperty('headers')
       && event.headers.hasOwnProperty('sec-websocket-key')) {
     
-    const payload = JSON.parse(event.body)
-    const result = await ws(event, payload.data)
-    const data = {
-      job_id: payload.job_id,
-      resolve: result
+    if (event.body) {
+      const payload = JSON.parse(event.body)
+      const result = await websocket(event, payload.data)
+      const data = {
+        job_id: payload.job_id,
+        resolve: result
+      }
+      response.body = JSON.stringify(data)
     }
-    response.body = JSON.stringify(data)
     
   } else if (event.path == '/api') {
     
@@ -69,7 +79,7 @@ module.exports.index = async (event, context) => {
   } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'MESSAGE') {
     
     const payload = JSON.parse(event.body)
-    const result = await ws(event, payload.data)
+    const result = await websocket(event, payload.data)
     const data = {
       job_id: payload.job_id,
       resolve: result
