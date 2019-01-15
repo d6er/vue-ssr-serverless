@@ -24,25 +24,24 @@ module.exports.index = async (event, context) => {
   }
   if (!event.path) {
     console.log('[handler.js no event.path]')
-    //console.log(event)
   }
   console.log('event.isOffline: ' + event.isOffline)
   
   context.callbackWaitsForEmptyEventLoop = false
+  
   coldStart = false
   
-  const cookies = event.hasOwnProperty('headers') && event.headers.hasOwnProperty('Cookie') ? cookie.parse(event.headers.Cookie) : ''
+  const cookies = event.hasOwnProperty('headers') && event.headers.hasOwnProperty('Cookie')
+        ? cookie.parse(event.headers.Cookie) : ''
 
   const response = {
     statusCode: 200,
     headers: { "Content-Type": "text/html" },
   }
   
-  if (event.isOffline) {
-    if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
-      await websocket(event, cookies)
-      return { statusCode: 200 }
-    }
+  if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
+    await websocket(event)
+    return { statusCode: 200 }
   }
   
   if (process.env.IS_OFFLINE
@@ -72,9 +71,8 @@ module.exports.index = async (event, context) => {
     
   } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
 
-    return {
-      statusCode: 200
-    }
+    await websocket(event)
+    return { statusCode: 200 }
 
   } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'MESSAGE') {
     

@@ -1,8 +1,11 @@
 import AWS from 'aws-sdk'
+import mongo from './mongo'
 
 const sockets = [] // for offline use only
 
 async function add (user_id, event) {
+  
+  console.log('websocket-pool add')
   
   if (event.isOffline) {
     
@@ -16,7 +19,12 @@ async function add (user_id, event) {
   } else {
     
     // production
-    
+    const _id = event.requestContext.connectionId
+    const db = mongo.getConnection()
+    db.collection('websockets').updateOne(
+      { _id: _id },
+      { _id: _id, user_id: user_id },
+      { upsert: true})
   }
   
 }
@@ -34,6 +42,12 @@ async function send (user_id, message) {
     })
     
   } else {
+    
+    const db = mongo.getConnection()
+    
+    const docs = await db.collection('websockets').find({ user_id: user_id }).toArray()
+    
+    console.log(docs)
     
     // production
     let wsClient = new AWS.ApiGatewayManagementApi({

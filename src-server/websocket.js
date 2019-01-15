@@ -14,15 +14,17 @@ Amplify.configure(aws_exports)
 
 async function callAPI (event) {
   
-  console.log('[websocket.js]')
+  console.log('[websocket.js] (event.body)')
   console.log(event.body)
   
   const db = await mongo.connect(config.mongo_url)
   
   if (event.requestContext.eventType == 'CONNECT') {
-    
-    console.log('CONNECT COOKIE')
-    const cookies = cookie.parse(event.headers.cookie)
+    console.log('CHECK COOKIE (event)')
+    console.log(event)
+    const cookies = event.isOffline
+          ? cookie.parse(event.headers.cookie)
+          : cookie.parse(event.headers.Cookie)
     
     Amplify.configure({ Auth: { storage: new CustomStorage(cookies) } })
     const userInfo = await Auth.currentUserInfo()
