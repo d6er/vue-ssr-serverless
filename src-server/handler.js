@@ -16,16 +16,13 @@ let coldStart = true
 module.exports.index = async (event, context) => {
   
   // Logging
+  console.log('[handler.js] event.isOffline: ' + event.isOffline)
   if (coldStart) {
     console.log('[handler.js] COLD START path: ' + event.path)
   }
   if (event.hasOwnProperty('requestContext')) {
     console.log('[handler.js] eventType: ' + event.requestContext.eventType)
   }
-  if (!event.path) {
-    console.log('[handler.js no event.path]')
-  }
-  console.log('event.isOffline: ' + event.isOffline)
   
   context.callbackWaitsForEmptyEventLoop = false
   
@@ -39,15 +36,31 @@ module.exports.index = async (event, context) => {
     headers: { "Content-Type": "text/html" },
   }
   
-  if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
-    await websocket(event)
-    return { statusCode: 200 }
+  // WebSocket
+  if (event.hasOwnProperty('requestContext')) {
+    if (event.requestContext.eventType == 'CONNECT') {
+      
+      // CONNECT
+      await websocket(event)
+      return { statusCode: 200 }
+      
+    } else if (event.requestContext.eventType == 'MESSAGE') {
+      
+      // MESSAGE
+      const wsResult = await websocket(event)
+      if (event.isOffline) {
+        response.body = JSON.stringify(wsResult)
+      } else {
+        return { statusCode: 200 }
+      }
+    }
   }
   
   if (process.env.IS_OFFLINE
       && event.hasOwnProperty('headers')
       && event.headers.hasOwnProperty('sec-websocket-key')) {
     
+    /*
     if (event.body) {
       const payload = JSON.parse(event.body)
       const result = await websocket(event, payload.data)
@@ -57,25 +70,24 @@ module.exports.index = async (event, context) => {
       }
       response.body = JSON.stringify(data)
     }
+    */
     
   } else if (event.path == '/api') {
     
+    /*
     const payload = JSON.parse(event.body)
     const result = await api(cookies, payload)
     
     response.body = JSON.stringify(result)
+    */
     
   } else if (event.path == '/auth/google') {
     
     return google.index()
     
-  } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'CONNECT') {
-
-    await websocket(event)
-    return { statusCode: 200 }
-
   } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'MESSAGE') {
     
+    /*
     const payload = JSON.parse(event.body)
     const result = await websocket(event, payload.data)
     const data = {
@@ -101,6 +113,7 @@ module.exports.index = async (event, context) => {
     return {
       statusCode: 200
     }
+    */
     
   } else {
     

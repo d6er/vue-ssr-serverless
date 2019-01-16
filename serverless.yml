@@ -41,8 +41,6 @@ functions:
           routeKey: $disconnect
       - websocket:
           routeKey: $default
-      - websocket:
-          routeKey: myAction
 
 package:
   exclude:

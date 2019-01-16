@@ -23,8 +23,8 @@ async function add (user_id, event) {
     const db = mongo.getConnection()
     db.collection('websockets').updateOne(
       { _id: _id },
-      { _id: _id, user_id: user_id },
-      { upsert: true})
+      { $set: { _id: _id, user_id: user_id } },
+      { upsert: true })
   }
   
 }
