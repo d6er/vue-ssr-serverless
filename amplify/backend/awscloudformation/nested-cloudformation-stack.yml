@@ -81,7 +81,7 @@
 		"authvuessrsls": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20181223205029-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20190116174128-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
 				"Parameters": {
 					"identityPoolName": "vuessrsls_pool",
 					"allowUnauthenticatedIdentities": false,
@@ -139,7 +139,7 @@
 							"Arn"
 						]
 					},
-					"env": "master"
+					"env": "dev"
 				}
 			}
 		}
