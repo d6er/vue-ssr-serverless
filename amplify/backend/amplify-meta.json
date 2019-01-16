@@ -1,35 +1,35 @@
 {
-	"providers": {
-		"awscloudformation": {
-			"AuthRoleName": "vuessrserverless-20190116174128-authRole",
-			"UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20190116174128-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20190116174128-authRole",
-			"Region": "us-east-1",
-			"DeploymentBucketName": "vuessrserverless-20190116174128-deployment",
-			"UnauthRoleName": "vuessrserverless-20190116174128-unauthRole",
-			"StackName": "vuessrserverless-20190116174128",
-			"StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20190116174128/8532af70-196a-11e9-b5ca-0abba895ce2c"
-		}
-	},
-	"auth": {
-		"vuessrsls": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/vuessrserverless-20190116174128-deployment/amplify-cfn-templates/auth/vuessrsls-cloudformation-template.yml",
-				"logicalId": "authvuessrsls"
-			},
-			"lastPushTimeStamp": "2019-01-16T08:44:30.590Z",
-			"output": {
-				"AppClientSecret": "rial3pcfpfbag9mp3ulpgkeq6gf9q4ma9vd25ulputmb0oikgt9",
-				"UserPoolId": "us-east-1_cSTvWkTS9",
-				"AppClientIDWeb": "6mq144onc5r6tjevdv7584198p",
-				"AppClientID": "2jmudbd8gfbhs0bhmc915pqa4h",
-				"IdentityPoolId": "us-east-1:ac09a110-a18c-49c0-a1bd-10c8c694bb2f",
-				"IdentityPoolName": "vuessrsls_pool__dev",
-				"UserPoolName": "vuessrsls_userpool"
-			},
-			"lastPushDirHash": "x+3LHejX11Am6LJAoYeff7oK3uw="
-		}
-	}
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "vuessrserverless-20190116174128-authRole",
+            "UnauthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20190116174128-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::504289346779:role/vuessrserverless-20190116174128-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "vuessrserverless-20190116174128-deployment",
+            "UnauthRoleName": "vuessrserverless-20190116174128-unauthRole",
+            "StackName": "vuessrserverless-20190116174128",
+            "StackId": "arn:aws:cloudformation:us-east-1:504289346779:stack/vuessrserverless-20190116174128/8532af70-196a-11e9-b5ca-0abba895ce2c"
+        },
+        "categories": {
+            "auth": {
+                "vuessrsls": {}
+            }
+        }
+    },
+    "auth": {
+        "vuessrsls": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "AppClientSecret": "rial3pcfpfbag9mp3ulpgkeq6gf9q4ma9vd25ulputmb0oikgt9",
+                "UserPoolId": "us-east-1_cSTvWkTS9",
+                "AppClientIDWeb": "6mq144onc5r6tjevdv7584198p",
+                "AppClientID": "2jmudbd8gfbhs0bhmc915pqa4h",
+                "IdentityPoolId": "us-east-1:ac09a110-a18c-49c0-a1bd-10c8c694bb2f",
+                "IdentityPoolName": "vuessrsls_pool__dev",
+                "UserPoolName": "vuessrsls_userpool"
+            },
+            "lastPushTimeStamp": "2019-01-16T13:03:29.946Z"
+        }
+    }
 }

@@ -20,9 +20,17 @@ async function callAPI (event) {
   if (event.requestContext.eventType == 'CONNECT') {
     
     // CONNECT
-    const cookies = event.isOffline
-          ? cookie.parse(event.headers.cookie)
-          : cookie.parse(event.headers.Cookie)
+    console.log('CONNECT')
+    console.log(event.headers)
+    
+    const headerCookie = event.isOffline ? 'cookie' : 'Cookie'
+    
+    // no cookie when signup
+    if (!event.headers.hasOwnProperty(headerCookie)) {
+      return
+    }
+    
+    const cookies = cookie.parse(event.headers[headerCookie])
     
     Amplify.configure({ Auth: { storage: new CustomStorage(cookies) } })
     
