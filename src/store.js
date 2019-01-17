@@ -39,7 +39,7 @@ export function createStore () {
     actions: {
       
       setApiListener ({ commit, state }) {
-        api.setJob(0, message => {
+        api.setApiListener(message => {
           commit('setNotification', message)
         })
       },

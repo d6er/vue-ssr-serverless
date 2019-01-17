@@ -59,4 +59,8 @@ function setJob (job_id, cb) {
   apiListener = cb
 }
 
-export default { connect, call, setJob }
+function setApiListener (cb) {
+  apiListener = cb
+}
+
+export default { connect, call, setJob, setApiListener }

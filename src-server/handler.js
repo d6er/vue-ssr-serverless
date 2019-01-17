@@ -2,7 +2,6 @@
 
 const require_esm = require("esm")(module)
 
-const AWS = require('aws-sdk')
 const mongo = require('./mongo')
 const util = require('util')
 const ssr = require('./ssr')
@@ -25,103 +24,40 @@ module.exports.index = async (event, context) => {
   }
   
   context.callbackWaitsForEmptyEventLoop = false
-  
   coldStart = false
-  
-  const cookies = event.hasOwnProperty('headers') && event.headers.hasOwnProperty('Cookie')
-        ? cookie.parse(event.headers.Cookie) : ''
-
-  const response = {
-    statusCode: 200,
-    headers: { "Content-Type": "text/html" },
-  }
   
   // WebSocket
   if (event.hasOwnProperty('requestContext')) {
     if (event.requestContext.eventType == 'CONNECT') {
-      
-      // CONNECT
       await websocket(event)
       return { statusCode: 200 }
-      
     } else if (event.requestContext.eventType == 'MESSAGE') {
-      
-      // MESSAGE
       const wsResult = await websocket(event)
       if (event.isOffline) {
-        response.body = JSON.stringify(wsResult)
+        console.log('[handler.js wsResult]')
+        console.log(wsResult)
+        return {
+          statusCode: 200,
+          headers: { "Content-Type": "text/html" },
+          body: JSON.stringify(wsResult)
+        }
       } else {
         return { statusCode: 200 }
       }
     }
   }
   
-  if (process.env.IS_OFFLINE
-      && event.hasOwnProperty('headers')
-      && event.headers.hasOwnProperty('sec-websocket-key')) {
-    
-    /*
-    if (event.body) {
-      const payload = JSON.parse(event.body)
-      const result = await websocket(event, payload.data)
-      const data = {
-        job_id: payload.job_id,
-        resolve: result
-      }
-      response.body = JSON.stringify(data)
-    }
-    */
-    
-  } else if (event.path == '/api') {
-    
-    /*
-    const payload = JSON.parse(event.body)
-    const result = await api(cookies, payload)
-    
-    response.body = JSON.stringify(result)
-    */
-    
-  } else if (event.path == '/auth/google') {
-    
+  // HTTP
+  if (event.path == '/auth/google') {
     return google.index()
-    
-  } else if (event.hasOwnProperty('requestContext') && event.requestContext.eventType == 'MESSAGE') {
-    
-    /*
-    const payload = JSON.parse(event.body)
-    const result = await websocket(event, payload.data)
-    const data = {
-      job_id: payload.job_id,
-      resolve: result
-    }
-    console.log('[websocket result]')
-    console.log(data)
-    
-    let wsClient = new AWS.ApiGatewayManagementApi({
-      apiVersion: '2018-11-29',
-      endpoint: 'https://kbm6sisjkh.execute-api.us-east-1.amazonaws.com/dev/'
-    })
-    
-    await wsClient.postToConnection({
-      ConnectionId: event.requestContext.connectionId,
-      Data: JSON.stringify(data)
-    }).promise().catch(err => {
-      console.log('[err]')
-      console.log(err)
-    })
-    
-    return {
-      statusCode: 200
-    }
-    */
-    
   } else {
-    
-    response.body = await util.promisify(ssr)(event, cookies)
-    
-  }
-  
-  if (response.hasOwnProperty('body')) {
-    return response
+    const cookies = event.hasOwnProperty('headers') && event.headers.hasOwnProperty('Cookie')
+          ? cookie.parse(event.headers.Cookie) : ''
+    const ssrBody = await util.promisify(ssr)(event, cookies)
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "text/html" },
+      body: ssrBody
+    }
   }
 }

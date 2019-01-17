@@ -15,13 +15,14 @@ async function add (user_id, event) {
       ws: event.ws
     }
     sockets.push(obj)
+    return
     
   } else {
     
     // production
     const _id = event.requestContext.connectionId
     const db = mongo.getConnection()
-    db.collection('websockets').updateOne(
+    return db.collection('websockets').updateOne(
       { _id: _id },
       { $set: { _id: _id, user_id: user_id } },
       { upsert: true })
@@ -52,7 +53,7 @@ async function send (user_id, message) {
     // production
     let wsClient = new AWS.ApiGatewayManagementApi({
       apiVersion: '2018-11-29',
-      endpoint: 'https://kbm6sisjkh.execute-api.us-east-1.amazonaws.com/dev/'
+      endpoint: 'https://g5ultv2z97.execute-api.us-east-1.amazonaws.com/dev/'
     })
     
   }
