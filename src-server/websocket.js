@@ -20,9 +20,6 @@ async function callAPI (event) {
   if (event.requestContext.eventType == 'CONNECT') {
     
     // CONNECT
-    console.log('CONNECT')
-    console.log(event.headers)
-    
     const headerCookie = event.isOffline ? 'cookie' : 'Cookie'
     
     // no cookie when signup
@@ -34,6 +31,7 @@ async function callAPI (event) {
     
     Amplify.configure({ Auth: { storage: new CustomStorage(cookies) } })
     
+    // todo: check if auth success
     const userInfo = await Auth.currentUserInfo()
     const user_id = parseInt(userInfo.attributes['custom:user_id'])
     
@@ -44,6 +42,8 @@ async function callAPI (event) {
   } else if (event.requestContext.eventType == 'MESSAGE') {
     
     // MESSAGE
+    console.log('MESSAGE')
+    console.log(event)
     const parsedBody = JSON.parse(event.body)
     const payload = parsedBody.data
     const api = require('./api/index.js')
@@ -55,15 +55,24 @@ async function callAPI (event) {
     
     if (event.isOffline) {
       
+      console.log('websocket.js payload')
+      console.log(payload)
+      console.log('websocket.js data')
+      console.log(data)
+      
       // offline
       return data
       
     } else {
       
       // production
+      const apiId = event.requestContext.apiId
+      const region = 'us-east-1'
+      const stage = event.requestContext.stage
+
       let wsClient = new AWS.ApiGatewayManagementApi({
         apiVersion: '2018-11-29',
-        endpoint: 'https://kbm6sisjkh.execute-api.us-east-1.amazonaws.com/dev/'
+        endpoint: apiId + '.execute-api.' + region + '.amazonaws.com/' + stage
       })
       
       await wsClient.postToConnection({

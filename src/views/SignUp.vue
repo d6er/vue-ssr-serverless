@@ -91,6 +91,7 @@ export default {
         }
         return this.$store.dispatch('callApi', payload)
       }).then(() => {
+        console.log('router.go /')
         this.$router.go('/')
       }).catch(err => {
         console.log(err)

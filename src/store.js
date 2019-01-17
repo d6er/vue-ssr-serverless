@@ -47,7 +47,9 @@ export function createStore () {
       callApi ({ commit, state }, data) {
         
         // todo: remove this line and auth on server side by cookie
-        //data.user_id = parseInt(state.user.attributes['custom:user_id'])
+        if (state.user) {
+          data.user_id = parseInt(state.user.attributes['custom:user_id'])
+        }
         
         return api.call(data).then(result => {
           

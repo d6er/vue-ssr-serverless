@@ -17,7 +17,7 @@ const methods = {
     
     await filter.copyDefaultFiltersAllLists({ user_id: user_id })
     
-    return
+    return 'initialized user'
   },
   
   createUser: function ({ username, password }) {

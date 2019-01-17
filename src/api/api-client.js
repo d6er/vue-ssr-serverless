@@ -14,26 +14,23 @@ import config from '../../config/client'
 let wsp
 let apiListener = null
 
-connect()
+//connect()
 
 // https://stackoverflow.com/questions/3780511/reconnection-of-client-when-server-reboots-in-websocket
 // todo: ping - pong
 function connect () {
   
-  console.log('[api-client.js]')
-  console.log(window.location.hostname)
-  
   wsp = new WebSocketPromise(config.websocket_url[window.location.hostname])
   
   wsp.onopen = () => {
-    console.log('WebSocket open.')
+    console.log('WebSocket open. ' + config.websocket_url[window.location.hostname])
     if (apiListener) {
       wsp.setJob(0, apiListener)
     }
   }
   
   wsp.onclose = () => {
-    console.log('WebSocket closed.')
+    console.log('WebSocket closed. ' + config.websocket_url[window.location.hostname])
     delay(5000).then(() => {
       connect()
     })
@@ -48,6 +45,9 @@ function delay (t) {
 }
 
 function call (data) {
+  if (!wsp) {
+    connect()
+  }
   if (wsp.readyState != 1) {
     return delay(1).then(() => call(data))
   }
@@ -59,4 +59,4 @@ function setJob (job_id, cb) {
   apiListener = cb
 }
 
-export default { call, setJob }
+export default { connect, call, setJob }

@@ -90,6 +90,8 @@ const methods = {
       return db.collection(coll).insertMany(copied_filters)
     }).then(r => {
       return methods.fetchFilters({ user_id: user_id, listName: listName })
+    }).catch(e => {
+      console.dir(e)
     })
   },
   
