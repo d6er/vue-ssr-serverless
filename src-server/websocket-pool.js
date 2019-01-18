@@ -34,26 +34,42 @@ async function send (user_id, message) {
   
   console.log(user_id + ' => ' + message)
   
+  const data = {
+    job_id: 0,
+    message: message
+  }
+    
   if (process.env.IS_OFFLINE) {
     
     // offline
     sockets.filter(s => s.user_id == user_id).map(s => {
       if (s.ws.readyState != 1) return
-      s.ws.send(JSON.stringify({ job_id: 0, message: message }))
+      s.ws.send(JSON.stringify(data))
     })
     
   } else {
     
+    // production
     const db = mongo.getConnection()
-    
     const docs = await db.collection('websockets').find({ user_id: user_id }).toArray()
     
-    console.log(docs)
-    
-    // production
     let wsClient = new AWS.ApiGatewayManagementApi({
       apiVersion: '2018-11-29',
       endpoint: 'https://g5ultv2z97.execute-api.us-east-1.amazonaws.com/dev/'
+    })
+    
+    docs.map(doc => {
+      wsClient.postToConnection({
+        ConnectionId: doc._id,
+        Data: JSON.stringify(data)
+      }).promise().catch(err => {
+        if (err.statusCode === 410) {
+          db.collection('websockets').deleteOne({ _id: doc._id })
+        } else {
+          console.log('[postToConnection ERROR]')
+          console.log(err)
+        }
+      })
     })
     
   }

@@ -17,7 +17,7 @@
           </div>
           <div class="field is-grouped">
             <p class="control">
-              <button @click="signIn" class="button is-primary">Sign in</button>
+              <button @click="signIn" class="button is-primary" :class="{ 'is-loading': isLoading }">Sign in</button>
             </p>
             <p class="control">
               <router-link to="/" class="button">Cancel</router-link>
@@ -25,6 +25,11 @@
           </div>
         </form>
       </div>
+      <article v-if="message" class="message is-danger">
+        <div class="message-body">
+          {{ message }}
+        </div>
+      </article>
     </div>
   </div>
 </template>
@@ -37,16 +42,22 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      isLoading: false,
+      message: ''
     }
   },
   
   methods: {
     signIn () {
+      this.isLoading = true
+      this.message = ''
+      
       Auth.signIn(this.username, this.password).then(user => {
         this.$router.go('/')
       }).catch(err => {
-        console.log(err)
+        this.isLoading = false
+        this.message = err.message ? err.message : err
       })
     }
   }
